@@ -270,6 +270,14 @@ class Pspdfkit {
     return Directory(path);
   }
 
+  /// onPageChanged callback
+  /// Called when the page changes.
+  static void Function(int oldPageIndex, int newPageIndex)? onPageChanged;
+
+  /// onDocumentLoaded callback
+  /// Called when the document is loaded.
+  static void Function()? onDocumentLoaded;
+
   /// onPAuse callback for FlutterPdfActivity
   static void Function()? flutterPdfActivityOnPause;
 
@@ -358,6 +366,17 @@ class Pspdfkit {
                 arguments['error'] as String);
             break;
           }
+        case 'pspdfkitPageChanged':
+          {
+            final Map<dynamic, dynamic> arguments =
+                call.arguments as Map<dynamic, dynamic>;
+            onPageChanged?.call(arguments['oldPageIndex'] as int,
+                arguments['newPageIndex'] as int);
+            break;
+          }
+        case 'pspdfkitDocumentLoaded':
+          onDocumentLoaded?.call();
+          break;
         default:
           if (kDebugMode) {
             print('Unknown method ${call.method} ');

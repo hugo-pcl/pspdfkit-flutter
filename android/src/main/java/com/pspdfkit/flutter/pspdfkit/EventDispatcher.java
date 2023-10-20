@@ -9,6 +9,8 @@
 
 package com.pspdfkit.flutter.pspdfkit;
 
+import android.os.Handler;
+import android.os.Looper;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
@@ -44,6 +46,8 @@ public class EventDispatcher {
         return instance;
     }
 
+    private Handler uiThreadHandler = new Handler(Looper.getMainLooper());
+
     public void setChannel(@Nullable MethodChannel channel) {
         this.channel = channel;
     }
@@ -52,7 +56,12 @@ public class EventDispatcher {
         sendEvent("flutterPdfActivityOnPause");
     }
 
-
+    public void notifyChangePage(int oldPageIndex, int newPageIndex) {
+        sendEvent("pspdfkitPageChanged", new HashMap<String, Integer>() {{
+            put("oldPageIndex", oldPageIndex);
+            put("newPageIndex", newPageIndex);
+        }});
+    }
 
     public void notifyInstantSyncStarted(String documentId) {
         sendEvent("pspdfkitInstantSyncStarted", documentId);
@@ -89,7 +98,7 @@ public class EventDispatcher {
 
     private void sendEvent(@NonNull final String method, @Nullable final Object arguments) {
         if (channel != null) {
-            channel.invokeMethod(method, arguments, null);
+            uiThreadHandler.post(() -> channel.invokeMethod(method, arguments, null));
         }
     }
 

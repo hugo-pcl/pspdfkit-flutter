@@ -625,6 +625,14 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
     // await Pspdfkit.setLicenseKey("YOUR_FLUTTER_LICENSE_KEY_GOES_HERE");
   }
 
+  void onPageChangedHandler(int oldPageIndex, int newPageIndex) {
+    print('onPageChangedHandler: $oldPageIndex -> $newPageIndex');
+  }
+
+  void onDocumentLoadedHandler() {
+    print('onDocumentLoadedHandler');
+  }
+
   void flutterPdfActivityOnPauseHandler() {
     print('flutterPdfActivityOnPauseHandler');
   }
@@ -645,6 +653,9 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
         () => pdfViewControllerWillDismissHandler();
     Pspdfkit.pdfViewControllerDidDismiss =
         () => pdfViewControllerDidDismissHandler();
+    Pspdfkit.onPageChanged = (int oldPageIndex, int newPageIndex) =>
+        onPageChangedHandler(oldPageIndex, newPageIndex);
+    Pspdfkit.onDocumentLoaded = () => onDocumentLoadedHandler();
 
     currentTheme = MediaQuery.of(context).platformBrightness == Brightness.light
         ? lightTheme
@@ -655,7 +666,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
           color: Colors.grey[200],
           padding: const EdgeInsets.fromLTRB(20, 20, 20, 20),
           child: Text(_pspdfkitWidgetExamples,
-              style: currentTheme.textTheme.headline4?.copyWith(
+              style: currentTheme.textTheme.headlineMedium?.copyWith(
                   fontSize: _fontSize, fontWeight: FontWeight.bold))),
       ListTile(
           title: const Text(_basicExample),
@@ -738,7 +749,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
           color: Colors.grey[200],
           padding: const EdgeInsets.fromLTRB(20, 20, 20, 20),
           child: Text(_pspdfkitGlobalPluginExamples,
-              style: currentTheme.textTheme.headline4?.copyWith(
+              style: currentTheme.textTheme.headlineMedium?.copyWith(
                   fontSize: _fontSize, fontWeight: FontWeight.bold))),
       ListTile(
           title: const Text(_basicExampleGlobal),
@@ -800,7 +811,7 @@ class ExampleListView extends StatelessWidget {
           padding: const EdgeInsets.only(top: 24),
           child: Center(
               child: Text(frameworkVersion,
-                  style: themeData.textTheme.headline4?.copyWith(
+                  style: themeData.textTheme.headlineMedium?.copyWith(
                       fontSize: _fontSize,
                       fontWeight: FontWeight.bold,
                       color: themeData.primaryColor)))),
