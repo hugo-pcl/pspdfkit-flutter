@@ -18,6 +18,28 @@
 
 static FlutterMethodChannel *channel;
 
+@interface CustomAnalyticsClient : NSObject<PSPDFAnalyticsClient>
+
+- (void)logEvent:(PSPDFAnalyticsEventName)event attributes:(nullable NSDictionary<NSString *, id> *)attributes;
+
+@end
+
+@implementation CustomAnalyticsClient
+
+- (void)logEvent:(PSPDFAnalyticsEventName)event attributes:(NSDictionary<NSString *, id> * _Nullable)attributes {
+    if (event == PSPDFAnalyticsEventNameSpreadChange) {
+        NSDictionary *arguments = @{
+            @"oldPageIndex": [attributes objectForKey:@"previous_spread_index"],
+            @"newPageIndex": [attributes objectForKey:@"new_spread_index"]
+        };
+        [channel invokeMethod:@"pspdfkitPageChanged" arguments:arguments];
+    }
+    if (event == PSPDFAnalyticsEventNameDocumentLoad) {
+        [channel invokeMethod:@"pspdfkitDocumentLoaded" arguments:nil];
+    }
+}
+@end
+
 @interface PspdfkitPlugin() <PSPDFViewControllerDelegate, PSPDFInstantClientDelegate>
 @property (nonatomic) PSPDFViewController *pdfViewController;
 @end
@@ -33,6 +55,10 @@ PSPDFSettingKey const PSPDFSettingKeyHybridEnvironment = @"com.pspdfkit.hybrid-e
     channel = [FlutterMethodChannel methodChannelWithName:@"com.pspdfkit.global" binaryMessenger:[registrar messenger]];
     PspdfkitPlugin* instance = [[PspdfkitPlugin alloc] init];
     [registrar addMethodCallDelegate:instance channel:channel];
+    
+    PSPDFKitGlobal.sharedInstance.analytics.enabled = YES;
+    id<PSPDFAnalyticsClient> analyticsClient = [[CustomAnalyticsClient alloc] init];
+    [PSPDFKitGlobal.sharedInstance.analytics addAnalyticsClient:analyticsClient];
 }
 
 - (void)handleMethodCall:(FlutterMethodCall*)call result:(FlutterResult)result {
