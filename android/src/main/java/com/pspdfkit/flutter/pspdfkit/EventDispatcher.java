@@ -46,7 +46,7 @@ public class EventDispatcher {
         return instance;
     }
 
-    private Handler uiThreadHandler = new Handler(Looper.getMainLooper());
+    private final Handler uiThreadHandler = new Handler(Looper.getMainLooper());
 
     public void setChannel(@Nullable MethodChannel channel) {
         this.channel = channel;
@@ -56,7 +56,14 @@ public class EventDispatcher {
         sendEvent("flutterPdfActivityOnPause");
     }
 
-    public void notifyChangePage(int oldPageIndex, int newPageIndex) {
+    public void notifyDocumentLoaded(@NotNull PdfDocument document) {
+        sendEvent("pspdfkitDocumentLoaded", new HashMap<String, Object>() {{
+            put("uid", document.getUid());
+            put("pageCount", document.getPageCount());
+        }});
+    }
+
+    public void notifyPageChanged(int oldPageIndex, int newPageIndex) {
         sendEvent("pspdfkitPageChanged", new HashMap<String, Integer>() {{
             put("oldPageIndex", oldPageIndex);
             put("newPageIndex", newPageIndex);
@@ -100,9 +107,5 @@ public class EventDispatcher {
         if (channel != null) {
             uiThreadHandler.post(() -> channel.invokeMethod(method, arguments, null));
         }
-    }
-
-    public void notifyDocumentLoaded(@NotNull PdfDocument document) {
-        sendEvent("pspdfkitDocumentLoaded", document.getUid());
     }
 }
