@@ -11,14 +11,15 @@ import 'dart:async';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:pspdfkit_flutter/widgets/pspdfkit_widget_controller.dart';
+import 'package:pspdfkit_flutter/pspdfkit.dart';
 import 'package:pspdfkit_flutter/widgets/pspdfkit_widget.dart';
+import 'package:pspdfkit_flutter/widgets/pspdfkit_widget_controller.dart';
 
 import 'utils/platform_utils.dart';
 
 class PspdfkitManualSaveExampleWidget extends StatefulWidget {
   final String documentPath;
-  final dynamic configuration;
+  final PspdfkitConfiguration? configuration;
 
   const PspdfkitManualSaveExampleWidget(
       {Key? key, required this.documentPath, this.configuration})

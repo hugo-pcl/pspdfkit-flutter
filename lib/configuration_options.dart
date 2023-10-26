@@ -210,7 +210,24 @@ enum UserInterfaceViewMode {
   never
 }
 
-enum AppearanceMode { defaultMode, night, sepia }
+enum AppearanceMode {
+  defaultMode,
+  night,
+  sepia;
+
+  String get name {
+    switch (this) {
+      case defaultMode:
+        return 'default';
+      case night:
+        return 'night';
+      case sepia:
+        return 'sepia';
+      default:
+        return 'default';
+    }
+  }
+}
 
 enum SettingsMenuItem {
   theme,

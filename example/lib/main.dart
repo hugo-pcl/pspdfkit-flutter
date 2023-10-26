@@ -361,7 +361,8 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
     await Navigator.of(context).push<dynamic>(MaterialPageRoute<dynamic>(
         builder: (_) => PspdfkitManualSaveExampleWidget(
             documentPath: extractedWritableDocument.path,
-            configuration: const {disableAutosave: true})));
+            configuration:
+                const PspdfkitConfiguration(disableAutosave: true))));
   }
 
   void saveAsExample() async {
