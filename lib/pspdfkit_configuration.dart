@@ -1,5 +1,45 @@
 part of pspdfkit;
 
+/// {@template pspdfkit_configuration}
+/// Options:
+/// * [scrollDirection] - Configures the direction of page scrolling in the document view.
+/// * [pageTransition] - Configures the page transition style used when changing pages.
+/// * [enableTextSelection] - Enables text selection in the document.
+/// * [disableAutosave] - Disables automatic saving of the document.
+/// * [pageMode] - Configures the page mode used when the document is opened.
+/// * [spreadFitting] - Configures the spread fitting mode used when the document is opened. `adaptive` is not supported on Android.
+/// * [showPageLabels] - Displays the current page number over the document view.
+/// * [startPage] - Sets the page that should be visible when the document is opened.
+/// * [documentLabelEnabled] - Shows an overlay displaying the document name.
+/// * [firstPageAlwaysSingle] - Option to show the first page separately.
+/// * [invertColors] - Inverts the colors of the document.
+/// * [password] - Sets the password used to decrypt the document.
+/// * [androidGrayScale] - Renders the document in grayscale. Only available on Android.
+/// * [inlineSearch] - Sets the type of search bar to be inline or modular.
+/// * [toolbarTitle] - Sets the title of the toolbar. For iOS, you need to set documentLabelEnabled, iOSUseParentNavigationBar, and iOSAllowToolbarTitleChange to false in your configuration before setting the custom title.
+/// * [showActionNavigationButtons] - Shows or hides the navigation buttons in the toolbar.
+/// * [userInterfaceViewMode] - Configures the user interface view mode.
+/// * [immersiveMode] - Hides the user interface if set to true.
+/// * [appearanceMode] - Configures the appearance mode used when the document is opened.
+/// * [settingsMenuItems] - Options that will be presented in the settings menu. The options prefixed with iOS or Android only work on the respective platform. Options without any prefix work on both platforms.
+/// * [androidShowSearchAction] - Enables / disables document search functionality. For iOS, add searchButtonItem to iOSLeftBarButtonItems or iOSRightBarButtonItems to achieve the same functionality.
+/// * [androidShowOutlineAction] - Enables / disables outline functionality. For iOS, add outlineButtonItem to iOSLeftBarButtonItems or iOSRightBarButtonItems to achieve the same functionality.
+/// * [androidShowBookmarksAction] - Enables / disables bookmark functionality. For iOS, add bookmarkButtonItem to iOSLeftBarButtonItems or iOSRightBarButtonItems to achieve the same functionality.
+/// * [androidEnableDocumentEditor] - Enables / disables document editor functionality. For iOS, add documentEditorButtonItem to iOSLeftBarButtonItems or iOSRightBarButtonItems to achieve the same functionality.
+/// * [androidShowShareAction] - Enables / disables share functionality. For iOS, add activityButtonItem to iOSLeftBarButtonItems or iOSRightBarButtonItems to achieve the same functionality.
+/// * [androidShowPrintAction] - Enables / disables print functionality. For iOS, add printButtonItem to iOSLeftBarButtonItems or iOSRightBarButtonItems to achieve the same functionality.
+/// * [androidShowDocumentInfoView] - Enables / disables document info functionality. For iOS, add outlineButtonItem to iOSLeftBarButtonItems or iOSRightBarButtonItems to achieve the same functionality.
+/// * [androidDarkThemeResource] - Sets the dark theme resource name. Only available on Android.
+/// * [androidDefaultThemeResource] - Sets the default theme resource name. Only available on Android.
+/// * [iOSLeftBarButtonItems] - Sets the left bar button items. Only available on iOS. Android, set individual options such as androidShowOutlineAction, androidShowSearchAction, etc. to achieve the same functionality.
+/// * [iOSRightBarButtonItems] - Sets the right bar button items. Only available on iOS. Android, set individual options such as androidShowOutlineAction, androidShowSearchAction, etc. to achieve the same functionality.
+/// * [iOSAllowToolbarTitleChange] - Allow PSPDFKit to change the title of this view controller.
+/// * [showThumbnailBar] - Thumbnail bar mode controls the display of page thumbnails viewing a document.
+/// * [androidShowThumbnailGridAction] - Enables / disables thumbnail grid functionality. For iOS, add thumbnailsButtonItem to iOSLeftBarButtonItems or iOSRightBarButtonItems to achieve the same functionality.
+/// * [enableAnnotationEditing] - Enables / disables annotation editing functionality.
+/// * [androidShowAnnotationListAction] - Enables / disables annotation list functionality. For iOS, add outlineButtonItem to iOSLeftBarButtonItems or iOSRightBarButtonItems to achieve the same functionality.
+/// * [enableInstantComments] - Enables / disables instant comments functionality.
+/// {@endtemplate}
 class PspdfkitConfiguration {
   final ScrollDirection? _scrollDirection;
   final PageTransition? _pageTransition;
@@ -44,6 +84,7 @@ class PspdfkitConfiguration {
 
   final bool? _enableInstantComments;
 
+  /// {@macro pspdfkit_configuration}
   const PspdfkitConfiguration({
     ScrollDirection? scrollDirection,
     PageTransition? pageTransition,
