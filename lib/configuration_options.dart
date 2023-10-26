@@ -191,3 +191,47 @@ const String enableMeasurementMagnifier = 'enableMagnifier';
 const String enableMeasurementTools = 'enableMeasurementTools';
 
 const String enableMeasurementToolSnapping = 'enableMeasurementToolSnapping';
+
+enum ScrollDirection { horizontal, vertical }
+
+enum PageTransition { scrollPerSpread, scrollContinuous, curl }
+
+enum PageMode { automatic, single, double }
+
+enum SpreadFitting { fit, fill, adaptive }
+
+enum UserInterfaceViewMode {
+  automatic,
+  automaticBorderPages,
+  automaticNoFirstLastPage,
+  always,
+  alwaysVisible,
+  alwaysHidden,
+  never
+}
+
+enum AppearanceMode { defaultMode, night, sepia }
+
+enum SettingsMenuItem {
+  theme,
+  androidTheme,
+  screenAwake,
+  androidScreenAwake,
+  pageLayout,
+  androidPageLayout,
+  pageTransition,
+  scrollDirection,
+  iOSAppearance,
+  iOSPageMode,
+  iOSSpreadFitting,
+  iOSBrightness
+}
+
+enum ShowThumbnailBar {
+  none,
+  defaultBar,
+  floating,
+  pinned,
+  scrubberBar,
+  scrollable
+}

@@ -1,13 +1,13 @@
 part of pspdfkit;
 
 class PspdfkitConfiguration {
-  final String? _scrollDirection;
-  final String? _pageTransition;
+  final ScrollDirection? _scrollDirection;
+  final PageTransition? _pageTransition;
   final bool? _enableTextSelection;
   final bool? _disableAutosave;
 
-  final String? _pageMode;
-  final String? _spreadFitting;
+  final PageMode? _pageMode;
+  final SpreadFitting? _spreadFitting;
   final bool? _showPageLabels;
   final int? _startPage;
   final bool? _documentLabelEnabled;
@@ -19,10 +19,10 @@ class PspdfkitConfiguration {
   final bool? _inlineSearch;
   final String? _toolbarTitle;
   final bool? _showActionNavigationButtons;
-  final String? _userInterfaceViewMode;
+  final UserInterfaceViewMode? _userInterfaceViewMode;
   final bool? _immersiveMode;
-  final String? _appearanceMode;
-  final List<String>? _settingsMenuItems;
+  final AppearanceMode? _appearanceMode;
+  final List<SettingsMenuItem>? _settingsMenuItems;
   final bool? _androidShowSearchAction;
   final bool? _androidShowOutlineAction;
   final bool? _androidShowBookmarksAction;
@@ -36,7 +36,7 @@ class PspdfkitConfiguration {
   final List<String>? _iOSRightBarButtonItems;
   final bool? _iOSAllowToolbarTitleChange;
 
-  final String? _showThumbnailBar;
+  final ShowThumbnailBar? _showThumbnailBar;
   final bool? _androidShowThumbnailGridAction;
 
   final bool? _enableAnnotationEditing;
@@ -45,12 +45,12 @@ class PspdfkitConfiguration {
   final bool? _enableInstantComments;
 
   const PspdfkitConfiguration({
-    String? scrollDirection,
-    String? pageTransition,
+    ScrollDirection? scrollDirection,
+    PageTransition? pageTransition,
     bool? enableTextSelection,
     bool? disableAutosave,
-    String? pageMode,
-    String? spreadFitting,
+    PageMode? pageMode,
+    SpreadFitting? spreadFitting,
     bool? showPageLabels,
     int? startPage,
     bool? documentLabelEnabled,
@@ -61,10 +61,10 @@ class PspdfkitConfiguration {
     bool? inlineSearch,
     String? toolbarTitle,
     bool? showActionNavigationButtons,
-    String? userInterfaceViewMode,
+    UserInterfaceViewMode? userInterfaceViewMode,
     bool? immersiveMode,
-    String? appearanceMode,
-    List<String>? settingsMenuItems,
+    AppearanceMode? appearanceMode,
+    List<SettingsMenuItem>? settingsMenuItems,
     bool? androidShowSearchAction,
     bool? androidShowOutlineAction,
     bool? androidShowBookmarksAction,
@@ -77,7 +77,7 @@ class PspdfkitConfiguration {
     List<String>? iOSLeftBarButtonItems,
     List<String>? iOSRightBarButtonItems,
     bool? iOSAllowToolbarTitleChange,
-    String? showThumbnailBar,
+    ShowThumbnailBar? showThumbnailBar,
     bool? androidShowThumbnailGridAction,
     bool? enableAnnotationEditing,
     bool? androidShowAnnotationListAction,
@@ -122,12 +122,12 @@ class PspdfkitConfiguration {
 
   Map<String, dynamic> toMap() {
     return {
-      scrollDirection: _scrollDirection,
-      pageTransition: _pageTransition,
+      scrollDirection: _scrollDirection?.name,
+      pageTransition: _pageTransition?.name,
       enableTextSelection: _enableTextSelection,
       disableAutosave: _disableAutosave,
-      pageMode: _pageMode,
-      spreadFitting: _spreadFitting,
+      pageMode: _pageMode?.name,
+      spreadFitting: _spreadFitting?.name,
       showPageLabels: _showPageLabels,
       startPage: _startPage,
       documentLabelEnabled: _documentLabelEnabled,
@@ -138,10 +138,10 @@ class PspdfkitConfiguration {
       inlineSearch: _inlineSearch,
       toolbarTitle: _toolbarTitle,
       showActionNavigationButtons: _showActionNavigationButtons,
-      userInterfaceViewMode: _userInterfaceViewMode,
+      userInterfaceViewMode: _userInterfaceViewMode?.name,
       immersiveMode: _immersiveMode,
-      appearanceMode: _appearanceMode,
-      settingsMenuItems: _settingsMenuItems,
+      appearanceMode: _appearanceMode?.name,
+      settingsMenuItems: _settingsMenuItems?.map((e) => e.name).toList(),
       androidShowSearchAction: _androidShowSearchAction,
       androidShowOutlineAction: _androidShowOutlineAction,
       androidShowBookmarksAction: _androidShowBookmarksAction,
@@ -154,7 +154,7 @@ class PspdfkitConfiguration {
       iOSLeftBarButtonItems: _iOSLeftBarButtonItems,
       iOSRightBarButtonItems: _iOSRightBarButtonItems,
       iOSAllowToolbarTitleChange: _iOSAllowToolbarTitleChange,
-      showThumbnailBar: _showThumbnailBar,
+      showThumbnailBar: _showThumbnailBar?.name,
       androidShowThumbnailGridAction: _androidShowThumbnailGridAction,
       enableAnnotationEditing: _enableAnnotationEditing,
       androidShowAnnotationListAction: _androidShowAnnotationListAction,

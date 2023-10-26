@@ -230,7 +230,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                     child: PspdfkitWidget(
                         documentPath: extractedDocument.path,
                         configuration: const PspdfkitConfiguration(
-                            appearanceMode: 'night',
+                            appearanceMode: AppearanceMode.night,
                             androidDarkThemeResource:
                                 'PSPDFKit.Theme.Example.Dark')))))));
   }
@@ -253,13 +253,14 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                     child: PspdfkitWidget(
                         documentPath: extractedDocument.path,
                         configuration: const PspdfkitConfiguration(
-                            scrollDirection: 'vertical',
-                            pageTransition: 'scrollContinuous',
-                            spreadFitting: 'fit',
-                            userInterfaceViewMode: 'alwaysVisible',
+                            scrollDirection: ScrollDirection.vertical,
+                            pageTransition: PageTransition.scrollContinuous,
+                            spreadFitting: SpreadFitting.fit,
+                            userInterfaceViewMode:
+                                UserInterfaceViewMode.alwaysVisible,
                             androidShowSearchAction: true,
                             inlineSearch: false,
-                            showThumbnailBar: 'floating',
+                            showThumbnailBar: ShowThumbnailBar.floating,
                             androidShowThumbnailGridAction: true,
                             androidShowOutlineAction: true,
                             androidShowAnnotationListAction: true,
@@ -275,7 +276,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                             androidShowShareAction: true,
                             androidShowPrintAction: false,
                             androidShowDocumentInfoView: true,
-                            appearanceMode: 'default',
+                            appearanceMode: AppearanceMode.defaultMode,
                             androidDefaultThemeResource:
                                 'PSPDFKit.Theme.Example',
                             iOSRightBarButtonItems: [
@@ -288,18 +289,18 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                             iOSAllowToolbarTitleChange: false,
                             toolbarTitle: 'Custom Title',
                             settingsMenuItems: [
-                              'pageTransition',
-                              'scrollDirection',
-                              'androidTheme',
-                              'iOSAppearance',
-                              'androidPageLayout',
-                              'iOSPageMode',
-                              'iOSSpreadFitting',
-                              'androidScreenAwake',
-                              'iOSBrightness'
+                              SettingsMenuItem.pageTransition,
+                              SettingsMenuItem.scrollDirection,
+                              SettingsMenuItem.androidTheme,
+                              SettingsMenuItem.iOSAppearance,
+                              SettingsMenuItem.androidPageLayout,
+                              SettingsMenuItem.iOSPageMode,
+                              SettingsMenuItem.iOSSpreadFitting,
+                              SettingsMenuItem.androidScreenAwake,
+                              SettingsMenuItem.iOSBrightness
                             ],
                             showActionNavigationButtons: false,
-                            pageMode: 'double',
+                            pageMode: PageMode.double,
                             firstPageAlwaysSingle: true)))))));
   }
 
@@ -425,7 +426,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
     final extractedDocument = await extractAsset(context, _documentPath);
     await Pspdfkit.present(extractedDocument.path,
         configuration: const PspdfkitConfiguration(
-            appearanceMode: 'night',
+            appearanceMode: AppearanceMode.night,
             androidDarkThemeResource: 'PSPDFKit.Theme.Example.Dark'));
   }
 
@@ -433,13 +434,13 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
     final extractedDocument = await extractAsset(context, _documentPath);
     await Pspdfkit.present(extractedDocument.path,
         configuration: const PspdfkitConfiguration(
-            scrollDirection: 'vertical',
-            pageTransition: 'scrollPerSpread',
-            spreadFitting: 'fit',
-            userInterfaceViewMode: 'alwaysVisible',
+            scrollDirection: ScrollDirection.vertical,
+            pageTransition: PageTransition.scrollContinuous,
+            spreadFitting: SpreadFitting.fit,
+            userInterfaceViewMode: UserInterfaceViewMode.alwaysVisible,
             androidShowSearchAction: true,
             inlineSearch: false,
-            showThumbnailBar: 'floating',
+            showThumbnailBar: ShowThumbnailBar.floating,
             androidShowThumbnailGridAction: true,
             androidShowOutlineAction: true,
             androidShowAnnotationListAction: true,
@@ -455,7 +456,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
             androidShowShareAction: true,
             androidShowPrintAction: false,
             androidShowDocumentInfoView: true,
-            appearanceMode: 'default',
+            appearanceMode: AppearanceMode.defaultMode,
             androidDefaultThemeResource: 'PSPDFKit.Theme.Example',
             iOSRightBarButtonItems: [
               'thumbnailsButtonItem',
@@ -467,18 +468,18 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
             iOSAllowToolbarTitleChange: false,
             toolbarTitle: 'Custom Title',
             settingsMenuItems: [
-              'pageTransition',
-              'scrollDirection',
-              'androidTheme',
-              'iOSAppearance',
-              'androidPageLayout',
-              'iOSPageMode',
-              'iOSSpreadFitting',
-              'androidScreenAwake',
-              'iOSBrightness'
+              SettingsMenuItem.pageTransition,
+              SettingsMenuItem.scrollDirection,
+              SettingsMenuItem.androidTheme,
+              SettingsMenuItem.iOSAppearance,
+              SettingsMenuItem.androidPageLayout,
+              SettingsMenuItem.iOSPageMode,
+              SettingsMenuItem.iOSSpreadFitting,
+              SettingsMenuItem.androidScreenAwake,
+              SettingsMenuItem.iOSBrightness
             ],
             showActionNavigationButtons: false,
-            pageMode: 'double',
+            pageMode: PageMode.double,
             firstPageAlwaysSingle: true));
   }
 
