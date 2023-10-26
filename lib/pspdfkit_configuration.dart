@@ -32,8 +32,8 @@ class PspdfkitConfiguration {
   final bool? _androidShowDocumentInfoView;
   final String? _androidDarkThemeResource;
   final String? _androidDefaultThemeResource;
-  final List<String>? _iOSLeftBarButtonItems;
-  final List<String>? _iOSRightBarButtonItems;
+  final List<IOSBarButtonsItem>? _iOSLeftBarButtonItems;
+  final List<IOSBarButtonsItem>? _iOSRightBarButtonItems;
   final bool? _iOSAllowToolbarTitleChange;
 
   final ShowThumbnailBar? _showThumbnailBar;
@@ -74,8 +74,8 @@ class PspdfkitConfiguration {
     bool? androidShowDocumentInfoView,
     String? androidDarkThemeResource,
     String? androidDefaultThemeResource,
-    List<String>? iOSLeftBarButtonItems,
-    List<String>? iOSRightBarButtonItems,
+    List<IOSBarButtonsItem>? iOSLeftBarButtonItems,
+    List<IOSBarButtonsItem>? iOSRightBarButtonItems,
     bool? iOSAllowToolbarTitleChange,
     ShowThumbnailBar? showThumbnailBar,
     bool? androidShowThumbnailGridAction,
@@ -151,8 +151,10 @@ class PspdfkitConfiguration {
       androidShowDocumentInfoView: _androidShowDocumentInfoView,
       androidDarkThemeResource: _androidDarkThemeResource,
       androidDefaultThemeResource: _androidDefaultThemeResource,
-      iOSLeftBarButtonItems: _iOSLeftBarButtonItems,
-      iOSRightBarButtonItems: _iOSRightBarButtonItems,
+      iOSLeftBarButtonItems:
+          _iOSLeftBarButtonItems?.map((e) => e.name).toList(),
+      iOSRightBarButtonItems:
+          _iOSRightBarButtonItems?.map((e) => e.name).toList(),
       iOSAllowToolbarTitleChange: _iOSAllowToolbarTitleChange,
       showThumbnailBar: _showThumbnailBar?.name,
       androidShowThumbnailGridAction: _androidShowThumbnailGridAction,

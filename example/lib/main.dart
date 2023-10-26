@@ -280,12 +280,14 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                             androidDefaultThemeResource:
                                 'PSPDFKit.Theme.Example',
                             iOSRightBarButtonItems: [
-                              'thumbnailsButtonItem',
-                              'activityButtonItem',
-                              'searchButtonItem',
-                              'annotationButtonItem'
+                              IOSBarButtonsItem.thumbnailsButtonItem,
+                              IOSBarButtonsItem.activityButtonItem,
+                              IOSBarButtonsItem.searchButtonItem,
+                              IOSBarButtonsItem.annotationButtonItem
                             ],
-                            iOSLeftBarButtonItems: ['settingsButtonItem'],
+                            iOSLeftBarButtonItems: [
+                              IOSBarButtonsItem.settingsButtonItem,
+                            ],
                             iOSAllowToolbarTitleChange: false,
                             toolbarTitle: 'Custom Title',
                             settingsMenuItems: [
@@ -460,12 +462,14 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
             appearanceMode: AppearanceMode.defaultMode,
             androidDefaultThemeResource: 'PSPDFKit.Theme.Example',
             iOSRightBarButtonItems: [
-              'thumbnailsButtonItem',
-              'activityButtonItem',
-              'searchButtonItem',
-              'annotationButtonItem'
+              IOSBarButtonsItem.thumbnailsButtonItem,
+              IOSBarButtonsItem.activityButtonItem,
+              IOSBarButtonsItem.searchButtonItem,
+              IOSBarButtonsItem.annotationButtonItem
             ],
-            iOSLeftBarButtonItems: ['settingsButtonItem'],
+            iOSLeftBarButtonItems: [
+              IOSBarButtonsItem.settingsButtonItem,
+            ],
             iOSAllowToolbarTitleChange: false,
             toolbarTitle: 'Custom Title',
             settingsMenuItems: [

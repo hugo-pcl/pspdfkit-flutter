@@ -230,18 +230,15 @@ enum AppearanceMode {
 }
 
 enum SettingsMenuItem {
-  theme,
-  androidTheme,
-  screenAwake,
-  androidScreenAwake,
-  pageLayout,
-  androidPageLayout,
   pageTransition,
   scrollDirection,
+  androidTheme,
   iOSAppearance,
+  androidPageLayout,
   iOSPageMode,
   iOSSpreadFitting,
-  iOSBrightness
+  androidScreenAwake,
+  iOSBrightness,
 }
 
 enum ShowThumbnailBar {
@@ -250,5 +247,42 @@ enum ShowThumbnailBar {
   floating,
   pinned,
   scrubberBar,
-  scrollable
+  scrollable;
+
+  String get name {
+    switch (this) {
+      case none:
+        return 'none';
+      case defaultBar:
+        return 'default';
+      case floating:
+        return 'floating';
+      case pinned:
+        return 'pinned';
+      case scrubberBar:
+        return 'scrubberBar';
+      case scrollable:
+        return 'scrollable';
+      default:
+        return 'default';
+    }
+  }
+}
+
+enum IOSBarButtonsItem {
+  closeButtonItem,
+  outlineButtonItem,
+  searchButtonItem,
+  thumbnailsButtonItem,
+  documentEditorButtonItem,
+  printButtonItem,
+  openInButtonItem,
+  emailButtonItem,
+  messageButtonItem,
+  annotationButtonItem,
+  bookmarkButtonItem,
+  brightnessButtonItem,
+  activityButtonItem,
+  settingsButtonItem,
+  readerViewButtonItem,
 }
