@@ -60,6 +60,9 @@ public class FlutterPdfActivity extends PdfActivity {
     @Override
     public void onDocumentLoaded(@NonNull PdfDocument pdfDocument) {
         super.onDocumentLoaded(pdfDocument);
+        // Notify the Flutter PSPDFKit plugin that the document has been loaded.
+        EventDispatcher.getInstance().notifyDocumentLoaded(pdfDocument);
+
         Result result = loadedDocumentResult.getAndSet(null);
         if (result != null) {
             result.success(true);
