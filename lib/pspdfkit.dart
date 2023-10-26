@@ -9,38 +9,27 @@
 library pspdfkit;
 
 import 'dart:async';
-import 'package:flutter/foundation.dart';
-import 'package:flutter/services.dart';
 import 'dart:io';
-import 'package:flutter/material.dart';
 
-part 'src/processor/pdf_image_page.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 part 'android_permission_status.dart';
-
 part 'configuration_options.dart';
-
-part 'src/processor/new_page.dart';
-
-part 'src/processor/page_pattern.dart';
-
-part 'src/processor/page_position.dart';
-
-part 'src/processor/page_z_order.dart';
-
-part 'src/processor/pdf_page.dart';
-
-part 'src/processor/page_size.dart';
-
+part 'pspdfkit_configuration.dart';
 part 'pspdfkit_processor.dart';
-
-part 'src/measurements/measurement_precision.dart';
-
-part 'src/measurements/measurement_scale.dart';
-
 part 'src/annotation_preset_configurations.dart';
-
 part 'src/annotations/annotation_tools.dart';
+part 'src/measurements/measurement_precision.dart';
+part 'src/measurements/measurement_scale.dart';
+part 'src/processor/new_page.dart';
+part 'src/processor/page_pattern.dart';
+part 'src/processor/page_position.dart';
+part 'src/processor/page_size.dart';
+part 'src/processor/page_z_order.dart';
+part 'src/processor/pdf_image_page.dart';
+part 'src/processor/pdf_page.dart';
 
 /// PSPDFKit plugin to load PDF and image documents on both platform iOS and Android.
 class Pspdfkit {
@@ -72,13 +61,15 @@ class Pspdfkit {
       });
 
   /// Loads a [document] with a supported format using a given [configuration].
-  static Future<bool?> present(String document,
-          {dynamic configuration,
-          MeasurementScale? measurementScale,
-          MeasurementPrecision? measurementPrecision}) async =>
+  static Future<bool?> present(
+    String document, {
+    PspdfkitConfiguration? configuration,
+    MeasurementScale? measurementScale,
+    MeasurementPrecision? measurementPrecision,
+  }) async =>
       await _channel.invokeMethod('present', <String, dynamic>{
         'document': document,
-        'configuration': configuration,
+        'configuration': configuration?.toMap(),
         'measurementScale': measurementScale?.toMap(),
         'measurementPrecision': measurementPrecision?.name,
       });
@@ -92,11 +83,11 @@ class Pspdfkit {
   /// Returns false if the document could not be opened.
   ///
   static Future<bool?> presentInstant(String serverUrl, String jwt,
-          [dynamic configuration]) async =>
+          [PspdfkitConfiguration? configuration]) async =>
       await _channel.invokeMethod('presentInstant', <String, dynamic>{
         'serverUrl': serverUrl,
         'jwt': jwt,
-        'configuration': configuration
+        'configuration': configuration?.toMap(),
       });
 
   /// Sets the value of a form field by specifying its fully qualified field name.
@@ -276,7 +267,7 @@ class Pspdfkit {
 
   /// onDocumentLoaded callback
   /// Called when the document is loaded.
-  static void Function()? onDocumentLoaded;
+  static void Function(String documentId, int pageCount)? onDocumentLoaded;
 
   /// onPAuse callback for FlutterPdfActivity
   static void Function()? flutterPdfActivityOnPause;
@@ -370,13 +361,22 @@ class Pspdfkit {
           {
             final Map<dynamic, dynamic> arguments =
                 call.arguments as Map<dynamic, dynamic>;
-            onPageChanged?.call(arguments['oldPageIndex'] as int,
-                arguments['newPageIndex'] as int);
+            onPageChanged?.call(
+              arguments['oldPageIndex'] as int,
+              arguments['newPageIndex'] as int,
+            );
             break;
           }
         case 'pspdfkitDocumentLoaded':
-          onDocumentLoaded?.call();
-          break;
+          {
+            final Map<dynamic, dynamic> arguments =
+                call.arguments as Map<dynamic, dynamic>;
+            onDocumentLoaded?.call(
+              arguments['uid'] as String,
+              arguments['pageCount'] as int,
+            );
+            break;
+          }
         default:
           if (kDebugMode) {
             print('Unknown method ${call.method} ');

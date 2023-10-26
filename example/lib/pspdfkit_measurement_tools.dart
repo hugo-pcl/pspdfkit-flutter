@@ -28,9 +28,9 @@ class _PspdfkitMeasurementsExampleState
           children: [
             PspdfkitWidget(
               documentPath: widget.documentPath,
-              configuration: const {
+              configuration: const PspdfkitConfiguration(
                 pageMode: 'single',
-              },
+              ),
               onPspdfkitWidgetCreated: (view) {
                 setState(() {
                   _controller = view;

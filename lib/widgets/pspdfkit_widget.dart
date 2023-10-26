@@ -15,6 +15,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:pspdfkit_flutter/pspdfkit.dart';
 
 import 'package:pspdfkit_flutter/widgets/pspdfkit_widget_controller.dart';
 
@@ -23,7 +24,7 @@ typedef PspdfkitWidgetCreatedCallback = void Function(
 
 class PspdfkitWidget extends StatefulWidget {
   final String? documentPath;
-  final dynamic configuration;
+  final PspdfkitConfiguration? configuration;
   final PspdfkitWidgetCreatedCallback? onPspdfkitWidgetCreated;
 
   const PspdfkitWidget({
@@ -49,7 +50,7 @@ class _PspdfkitWidgetState extends State<PspdfkitWidget> {
     // Pass parameters to the platform side.
     final Map<String, dynamic> creationParams = <String, dynamic>{
       'document': widget.documentPath,
-      'configuration': widget.configuration,
+      'configuration': widget.configuration?.toMap(),
     };
 
     if (defaultTargetPlatform == TargetPlatform.iOS) {
