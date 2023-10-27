@@ -33,6 +33,7 @@ part of pspdfkit;
 /// * [androidDefaultThemeResource] - Sets the default theme resource name. Only available on Android.
 /// * [iOSLeftBarButtonItems] - Sets the left bar button items. Only available on iOS. Android, set individual options such as androidShowOutlineAction, androidShowSearchAction, etc. to achieve the same functionality.
 /// * [iOSRightBarButtonItems] - Sets the right bar button items. Only available on iOS. Android, set individual options such as androidShowOutlineAction, androidShowSearchAction, etc. to achieve the same functionality.
+/// * [iOSDocumentInfoOptions] - Sets the document info view options.
 /// * [iOSAllowToolbarTitleChange] - Allow PSPDFKit to change the title of this view controller.
 /// * [showThumbnailBar] - Thumbnail bar mode controls the display of page thumbnails viewing a document.
 /// * [androidShowThumbnailGridAction] - Enables / disables thumbnail grid functionality. For iOS, add thumbnailsButtonItem to iOSLeftBarButtonItems or iOSRightBarButtonItems to achieve the same functionality.
@@ -74,6 +75,7 @@ class PspdfkitConfiguration {
   final String? _androidDefaultThemeResource;
   final List<IOSBarButtonsItem>? _iOSLeftBarButtonItems;
   final List<IOSBarButtonsItem>? _iOSRightBarButtonItems;
+  final List<IOSDocumentInfoOption>? _iOSDocumentInfoOptions;
   final bool? _iOSAllowToolbarTitleChange;
 
   final ShowThumbnailBar? _showThumbnailBar;
@@ -117,6 +119,7 @@ class PspdfkitConfiguration {
     String? androidDefaultThemeResource,
     List<IOSBarButtonsItem>? iOSLeftBarButtonItems,
     List<IOSBarButtonsItem>? iOSRightBarButtonItems,
+    List<IOSDocumentInfoOption>? iOSDocumentInfoOptions,
     bool? iOSAllowToolbarTitleChange,
     ShowThumbnailBar? showThumbnailBar,
     bool? androidShowThumbnailGridAction,
@@ -154,6 +157,7 @@ class PspdfkitConfiguration {
         _androidDefaultThemeResource = androidDefaultThemeResource,
         _iOSLeftBarButtonItems = iOSLeftBarButtonItems,
         _iOSRightBarButtonItems = iOSRightBarButtonItems,
+        _iOSDocumentInfoOptions = iOSDocumentInfoOptions,
         _iOSAllowToolbarTitleChange = iOSAllowToolbarTitleChange,
         _showThumbnailBar = showThumbnailBar,
         _androidShowThumbnailGridAction = androidShowThumbnailGridAction,
@@ -196,6 +200,8 @@ class PspdfkitConfiguration {
           _iOSLeftBarButtonItems?.map((e) => e.name).toList(),
       iOSRightBarButtonItems:
           _iOSRightBarButtonItems?.map((e) => e.name).toList(),
+      iOSDocumentInfoOptions:
+          _iOSDocumentInfoOptions?.map((e) => e.name).toList(),
       iOSAllowToolbarTitleChange: _iOSAllowToolbarTitleChange,
       showThumbnailBar: _showThumbnailBar?.name,
       androidShowThumbnailGridAction: _androidShowThumbnailGridAction,

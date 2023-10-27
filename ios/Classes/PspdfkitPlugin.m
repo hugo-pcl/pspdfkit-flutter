@@ -207,8 +207,13 @@ PSPDFSettingKey const PSPDFSettingKeyHybridEnvironment = @"com.pspdfkit.hybrid-e
             if (configurationDictionary[key]) {
                 [PspdfkitFlutterHelper setToolbarTitle:configurationDictionary[key] forViewController:self.pdfViewController];
             }
+            key = @"documentInfoOptions";
+            if (configurationDictionary[key]) {
+                [PspdfkitFlutterHelper setDocumentInfoOptions:configurationDictionary[key] forViewController:self.pdfViewController];
+            }
+            
         }
-        
+            
         PSPDFNavigationController *navigationController = [[PSPDFNavigationController alloc] initWithRootViewController:self.pdfViewController];
         navigationController.modalPresentationStyle = UIModalPresentationFullScreen;
         UIViewController *presentingViewController = [UIApplication sharedApplication].delegate.window.rootViewController;

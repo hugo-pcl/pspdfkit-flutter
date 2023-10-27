@@ -50,6 +50,7 @@ const String androidDefaultThemeResource = 'androidDefaultThemeResource';
 const String iOSLeftBarButtonItems = 'iOSLeftBarButtonItems';
 const String iOSRightBarButtonItems = 'iOSRightBarButtonItems';
 const String iOSAllowToolbarTitleChange = 'iOSAllowToolbarTitleChange';
+const String iOSDocumentInfoOptions = 'iOSDocumentInfoOptions';
 
 /// Thumbnail Options
 
@@ -285,4 +286,13 @@ enum IOSBarButtonsItem {
   activityButtonItem,
   settingsButtonItem,
   readerViewButtonItem,
+}
+
+enum IOSDocumentInfoOption {
+  outline,
+  annotations,
+  bookmarks,
+  embeddedFiles,
+  documentInfo,
+  security,
 }
