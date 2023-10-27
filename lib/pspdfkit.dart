@@ -292,9 +292,18 @@ class Pspdfkit {
   /// onBookmarkRenamed callback
   /// Called when a bookmark is renamed.
   static void Function()? onBookmarkRenamed;
+  
+  /// onCreate callback for FlutterPdfActivity
+  static void Function()? flutterPdfActivityOnCreate;
 
-  /// onPAuse callback for FlutterPdfActivity
+  /// onPause callback for FlutterPdfActivity
   static void Function()? flutterPdfActivityOnPause;
+
+  /// onResume callback for FlutterPdfActivity
+  static void Function()? flutterPdfActivityOnResume;
+
+  /// onDestroy callback for FlutterPdfActivity
+  static void Function()? flutterPdfActivityOnDestroy;
 
   /// ViewControllerWillDismiss callback for PDFViewController
   static void Function()? pdfViewControllerWillDismiss;
@@ -331,8 +340,17 @@ class Pspdfkit {
   static Future<void> _platformCallHandler(MethodCall call) {
     try {
       switch (call.method) {
+        case 'flutterPdfActivityOnCreate':
+          flutterPdfActivityOnCreate?.call();
+          break;
         case 'flutterPdfActivityOnPause':
           flutterPdfActivityOnPause?.call();
+          break;
+          case 'flutterPdfActivityOnResume':
+          flutterPdfActivityOnResume?.call();
+          break;
+        case 'flutterPdfActivityOnDestroy':
+          flutterPdfActivityOnDestroy?.call();
           break;
         case 'pdfViewControllerWillDismiss':
           pdfViewControllerWillDismiss?.call();

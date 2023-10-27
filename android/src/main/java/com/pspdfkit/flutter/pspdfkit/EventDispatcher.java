@@ -52,8 +52,20 @@ public class EventDispatcher {
         this.channel = channel;
     }
 
+    public void notifyActivityOnCreate() {
+        sendEvent("flutterPdfActivityOnCreate");
+    }
+
     public void notifyActivityOnPause() {
         sendEvent("flutterPdfActivityOnPause");
+    }
+
+    public void notifyActivityOnResume() {
+        sendEvent("flutterPdfActivityOnResume");
+    }
+
+    public void notifyActivityOnDestroy() {
+        sendEvent("flutterPdfActivityOnDestroy");
     }
 
     public void notifyDocumentLoaded(@NotNull PdfDocument document) {
