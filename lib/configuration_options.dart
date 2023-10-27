@@ -42,6 +42,8 @@ const String androidShowSearchAction = 'androidShowSearchAction';
 const String androidShowOutlineAction = 'androidShowOutlineAction';
 const String androidShowBookmarksAction = 'androidShowBookmarksAction';
 const String androidEnableDocumentEditor = 'androidEnableDocumentEditor';
+const String androidEnableContentEditing = 'androidEnableContentEditing';
+
 const String androidShowShareAction = 'androidShowShareAction';
 const String androidShowPrintAction = 'androidShowPrintAction';
 const String androidShowDocumentInfoView = 'androidShowDocumentInfoView';

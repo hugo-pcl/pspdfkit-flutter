@@ -68,6 +68,7 @@ class PspdfkitConfiguration {
   final bool? _androidShowOutlineAction;
   final bool? _androidShowBookmarksAction;
   final bool? _androidEnableDocumentEditor;
+  final bool? _androidEnableContentEditing;
   final bool? _androidShowShareAction;
   final bool? _androidShowPrintAction;
   final bool? _androidShowDocumentInfoView;
@@ -112,6 +113,7 @@ class PspdfkitConfiguration {
     bool? androidShowOutlineAction,
     bool? androidShowBookmarksAction,
     bool? androidEnableDocumentEditor,
+    bool? androidEnableContentEditing,
     bool? androidShowShareAction,
     bool? androidShowPrintAction,
     bool? androidShowDocumentInfoView,
@@ -150,6 +152,7 @@ class PspdfkitConfiguration {
         _androidShowOutlineAction = androidShowOutlineAction,
         _androidShowBookmarksAction = androidShowBookmarksAction,
         _androidEnableDocumentEditor = androidEnableDocumentEditor,
+        _androidEnableContentEditing = androidEnableContentEditing,
         _androidShowShareAction = androidShowShareAction,
         _androidShowPrintAction = androidShowPrintAction,
         _androidShowDocumentInfoView = androidShowDocumentInfoView,
@@ -191,6 +194,7 @@ class PspdfkitConfiguration {
       androidShowOutlineAction: _androidShowOutlineAction,
       androidShowBookmarksAction: _androidShowBookmarksAction,
       androidEnableDocumentEditor: _androidEnableDocumentEditor,
+      androidEnableContentEditing: _androidEnableContentEditing,
       androidShowShareAction: _androidShowShareAction,
       androidShowPrintAction: _androidShowPrintAction,
       androidShowDocumentInfoView: _androidShowDocumentInfoView,

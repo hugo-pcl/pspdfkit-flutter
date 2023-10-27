@@ -76,6 +76,8 @@ class ConfigurationAdapter {
     private static final String DARK_THEME_RESOURCE = "darkThemeResource";
     private static final String DEFAULT_THEME_RESOURCE = "defaultThemeResource";
 
+    private static final String ENABLE_CONTENT_EDITING = "enableContentEditing";
+
     // Thumbnail Options
     private static final String SHOW_THUMBNAIL_BAR = "showThumbnailBar";
     private static final String SHOW_THUMBNAIL_GRID_ACTION = "showThumbnailGridAction";
@@ -319,6 +321,10 @@ class ConfigurationAdapter {
             key = getKeyOfType(configurationMap, ENABLE_DOCUMENT_EDITOR, Boolean.class);
             if (key != null) {
                 configureEnableDocumentEditor((Boolean) configurationMap.get(key));
+            }
+            key = getKeyOfType(configurationMap, ENABLE_CONTENT_EDITING, Boolean.class);
+            if (key != null) {
+                configureEnableContentEditing((Boolean) configurationMap.get(key));
             }
             key = getKeyOfType(configurationMap, SHOW_THUMBNAIL_BAR, String.class);
             if (key != null) {
@@ -619,6 +625,14 @@ class ConfigurationAdapter {
             configuration.enableDocumentEditor();
         } else {
             configuration.disableDocumentEditor();
+        }
+    }
+
+    private void configureEnableContentEditing(boolean enableContentEditing) {
+        if (enableContentEditing) {
+            configuration.enableContentEditing();
+        } else {
+            configuration.disableContentEditing();
         }
     }
 
