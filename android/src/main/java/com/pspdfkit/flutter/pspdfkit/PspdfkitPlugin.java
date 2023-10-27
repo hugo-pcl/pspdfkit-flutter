@@ -198,7 +198,6 @@ public class PspdfkitPlugin
                             activity,
                             androidLicenseKey,
                             new ArrayList<>()
-                            // Disable detection of Hybrid Technology.
                     );
                 } catch (PSPDFKitException e) {
                     result.error("PSPDFKitException", e.getMessage(), null);

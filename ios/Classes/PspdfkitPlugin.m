@@ -20,11 +20,15 @@ static FlutterMethodChannel *channel;
 
 @interface CustomAnalyticsClient : NSObject<PSPDFAnalyticsClient>
 
+PSPDF_EXPORT PSPDFAnalyticsEventName const PSPDFAnalyticsEventNameDocumentFullyLoaded;
+
 - (void)logEvent:(PSPDFAnalyticsEventName)event attributes:(nullable NSDictionary<NSString *, id> *)attributes;
 
 @end
 
 @implementation CustomAnalyticsClient
+
+PSPDFAnalyticsEventName const PSPDFAnalyticsEventNameDocumentFullyLoaded = @"fully_loaded";
 
 - (void)logEvent:(PSPDFAnalyticsEventName)event attributes:(NSDictionary<NSString *, id> * _Nullable)attributes {
     if (event == PSPDFAnalyticsEventNameSpreadChange) {
@@ -32,10 +36,18 @@ static FlutterMethodChannel *channel;
             @"oldPageIndex": [attributes objectForKey:@"previous_spread_index"],
             @"newPageIndex": [attributes objectForKey:@"new_spread_index"]
         };
-        [channel invokeMethod:@"pspdfkitPageChanged" arguments:arguments];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [channel invokeMethod:@"pspdfkitPageChanged" arguments:arguments];
+        });
     }
-    if (event == PSPDFAnalyticsEventNameDocumentLoad) {
-        [channel invokeMethod:@"pspdfkitDocumentLoaded" arguments:nil];
+    if (event == PSPDFAnalyticsEventNameDocumentFullyLoaded) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            NSDictionary *arguments = @{
+                @"uid": [attributes objectForKey:@"uid"],
+                @"pageCount": [attributes objectForKey:@"pageCount"]
+            };
+            [channel invokeMethod:@"pspdfkitDocumentLoaded" arguments:arguments];
+        });
     }
 }
 @end
@@ -69,7 +81,7 @@ PSPDFSettingKey const PSPDFSettingKeyHybridEnvironment = @"com.pspdfkit.hybrid-e
         [PSPDFKitGlobal setLicenseKey:licenseKey options:@{PSPDFSettingKeyHybridEnvironment: @"Flutter"}];
     } else if ([@"setLicenseKeys" isEqualToString:call.method]) {
         NSString *iOSLicenseKey = call.arguments[@"iOSLicenseKey"];
-        [PSPDFKitGlobal setLicenseKey:iOSLicenseKey options:@{PSPDFSettingKeyHybridEnvironment: @"Flutter"}];
+        [PSPDFKitGlobal setLicenseKey:iOSLicenseKey];
     }else if ([@"present" isEqualToString:call.method]) {
         
         NSString *documentPath = call.arguments[@"document"];
@@ -88,6 +100,16 @@ PSPDFSettingKey const PSPDFSettingKeyHybridEnvironment = @"com.pspdfkit.hybrid-e
             result(error);
             return;
         }
+        
+        // Add page count in custom document loaded event
+        PSPDFPageCount count = [document pageCount];
+        NSDictionary *arguments = @{
+            @"uid": [document UID],
+            @"pageCount": @(count),
+        };
+        
+        [PSPDFKitGlobal.sharedInstance.analytics logEvent:PSPDFAnalyticsEventNameDocumentFullyLoaded attributes:arguments];
+        
         NSDictionary *measurementScale = call.arguments[@"measurementScale"];
         if (measurementScale){
             PSPDFMeasurementScale *scale = [PspdfkitMeasurementConvertor convertScaleWithMeasurement:measurementScale];

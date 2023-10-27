@@ -24,6 +24,8 @@
 
 @implementation PspdfPlatformView
 
+PSPDFAnalyticsEventName const PSPDFAnalyticsEventNameDocumentLoaded = @"fully_loaded";
+
 - (nonnull UIView *)view {
     return self.navigationController.view ?: [UIView new];
 }
@@ -64,6 +66,15 @@
             _pdfViewController.appearanceModeManager.appearanceMode = [PspdfkitFlutterConverter appearanceMode:configurationDictionary];
             _pdfViewController.pageIndex = [PspdfkitFlutterConverter pageIndex:configurationDictionary];
             _pdfViewController.delegate = self;
+            
+            // Add page count in custom document loaded event
+            PSPDFPageCount count = [document pageCount];
+            NSDictionary *arguments = @{
+                @"uid": [document UID],
+                @"pageCount": @(count),
+            };
+            
+            [PSPDFKitGlobal.sharedInstance.analytics logEvent:PSPDFAnalyticsEventNameDocumentLoaded attributes:arguments];
 
             if ((id)configurationDictionary != NSNull.null) {
                 NSString *key = @"leftBarButtonItems";
