@@ -269,6 +269,30 @@ class Pspdfkit {
   /// Called when the document is loaded.
   static void Function(String documentId, int pageCount)? onDocumentLoaded;
 
+  /// onBookmarkTapped callback
+  /// Called when a bookmark is tapped.
+  static void Function()? onBookmarkTapped;
+
+  /// onBookmarkAdded callback
+  /// Called when a bookmark is added.
+  static void Function()? onBookmarkAdded;
+
+  /// onBookmarkRemoved callback
+  /// Called when a bookmark is removed.
+  static void Function()? onBookmarkRemoved;
+
+  /// onBookmarkEdited callback
+  /// Called when a bookmark is edited.
+  static void Function()? onBookmarkEdited;
+
+  /// onBookmarksSorted callback
+  /// Called when bookmarks are sorted.
+  static void Function()? onBookmarksSorted;
+
+  /// onBookmarkRenamed callback
+  /// Called when a bookmark is renamed.
+  static void Function()? onBookmarkRenamed;
+
   /// onPAuse callback for FlutterPdfActivity
   static void Function()? flutterPdfActivityOnPause;
 
@@ -377,6 +401,24 @@ class Pspdfkit {
             );
             break;
           }
+        case 'pspdfkitBookmarkTapped':
+          onBookmarkTapped?.call();
+          break;
+        case 'pspdfkitBookmarkAdded':
+          onBookmarkAdded?.call();
+          break;
+        case 'pspdfkitBookmarkRemoved':
+          onBookmarkRemoved?.call();
+          break;
+        case 'pspdfkitBookmarkEdited':
+          onBookmarkEdited?.call();
+          break;
+        case 'pspdfkitBookmarksSorted':
+          onBookmarksSorted?.call();
+          break;
+        case 'pspdfkitBookmarkRenamed':
+          onBookmarkRenamed?.call();
+          break;
         default:
           if (kDebugMode) {
             print('Unknown method ${call.method} ');

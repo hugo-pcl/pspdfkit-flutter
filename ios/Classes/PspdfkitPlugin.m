@@ -49,6 +49,36 @@ PSPDFAnalyticsEventName const PSPDFAnalyticsEventNameDocumentFullyLoaded = @"ful
             [channel invokeMethod:@"pspdfkitDocumentLoaded" arguments:arguments];
         });
     }
+    if (event == PSPDFAnalyticsEventNameBookmarkSelect) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [channel invokeMethod:@"pspdfkitBookmarkTapped" arguments:nil];
+        });
+    }
+    if (event == PSPDFAnalyticsEventNameBookmarkAdd) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [channel invokeMethod:@"pspdfkitBookmarkAdded" arguments:nil];
+        });
+    }
+    if (event == PSPDFAnalyticsEventNameBookmarkEdit) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [channel invokeMethod:@"pspdfkitBookmarkEdited" arguments:nil];
+        });
+    }
+    if (event == PSPDFAnalyticsEventNameBookmarkRemove) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [channel invokeMethod:@"pspdfkitBookmarkRemoved" arguments:nil];
+        });
+    }
+    if (event == PSPDFAnalyticsEventNameBookmarkRename) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [channel invokeMethod:@"pspdfkitBookmarkRenamed" arguments:nil];
+        });
+    }
+    if (event == PSPDFAnalyticsEventNameBookmarkSort) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [channel invokeMethod:@"pspdfkitBookmarksSorted" arguments:nil];
+        });
+    }
 }
 @end
 

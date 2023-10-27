@@ -99,6 +99,31 @@ public class EventDispatcher {
         }});
     }
 
+    public void notifyBookmarkTapped() {
+        sendEvent("pspdfkitBookmarkTapped");
+    }
+
+    public void notifyBookmarkAdded() {
+        sendEvent("pspdfkitBookmarkAdded");
+    }
+
+    public void notifyBookmarksEdited() {
+        sendEvent("pspdfkitBookmarksEdited");
+    }
+
+    public void notifyBookmarkRemoved() {
+        sendEvent("pspdfkitBookmarkRemoved");
+    }
+
+    public void notifyBookmarksSorted() {
+        sendEvent("pspdfkitBookmarksSorted");
+    }
+
+    public void notifyBookmarkRenamed() {
+        sendEvent("pspdfkitBookmarkRenamed");
+    }
+
+
     private void sendEvent(String eventName) {
         sendEvent(eventName, null);
     }
