@@ -638,6 +638,30 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
     print('onDocumentLoadedHandler: $uid, $pageCount');
   }
 
+  void onBookmarkTappedHandler() {
+    print('onBookmarkTappedHandler');
+  }
+
+  void onBookmarkAddedHandler() {
+    print('onBookmarkAddedHandler');
+  }
+
+  void onBookmarkEditedHandler() {
+    print('onBookmarkEditedHandler');
+  }
+
+  void onBookmarkRemovedHandler() {
+    print('onBookmarkRemovedHandler');
+  }
+
+  void onBookmarksSortedHandler() {
+    print('onBookmarksSortedHandler');
+  }
+
+  void onBookmarkRenamedHandler() {
+    print('onBookmarkRenamedHandler');
+  }
+
   void flutterPdfActivityOnPauseHandler() {
     print('flutterPdfActivityOnPauseHandler');
   }
@@ -660,6 +684,12 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
         () => pdfViewControllerDidDismissHandler();
     Pspdfkit.onPageChanged = onPageChangedHandler;
     Pspdfkit.onDocumentLoaded = onDocumentLoadedHandler;
+    Pspdfkit.onBookmarkTapped = onBookmarkTappedHandler;
+    Pspdfkit.onBookmarkAdded = onBookmarkAddedHandler;
+    Pspdfkit.onBookmarkEdited = onBookmarkEditedHandler;
+    Pspdfkit.onBookmarkRemoved = onBookmarkRemovedHandler;
+    Pspdfkit.onBookmarksSorted = onBookmarksSortedHandler;
+    Pspdfkit.onBookmarkRenamed = onBookmarkRenamedHandler;
 
     currentTheme = MediaQuery.of(context).platformBrightness == Brightness.light
         ? lightTheme
