@@ -60,6 +60,10 @@ public class EventDispatcher {
         sendEvent("flutterPdfActivityOnPause");
     }
 
+    public void notifyPdfFragmentAdded() {
+        sendEvent("flutterPdfFragmentAdded");
+    }    
+
     public void notifyActivityOnResume() {
         sendEvent("flutterPdfActivityOnResume");
     }

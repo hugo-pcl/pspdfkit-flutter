@@ -129,7 +129,17 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(home: HomePage());
+    return MaterialApp(
+      home: const HomePage(),
+      theme: ThemeData(
+        useMaterial3: false,
+        primaryColor: Colors.blue,
+        appBarTheme: const AppBarTheme(
+          backgroundColor: Colors.blue,
+          foregroundColor: Colors.white,
+        ),
+      ),
+    );
   }
 }
 
@@ -141,13 +151,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
-  static final ThemeData lightTheme =
-      ThemeData(primaryColor: Colors.black, dividerColor: Colors.grey[400]);
-
-  static final ThemeData darkTheme =
-      ThemeData(primaryColor: Colors.white, dividerColor: Colors.grey[800]);
   String _frameworkVersion = '';
-  ThemeData currentTheme = lightTheme;
 
   void showDocument() async {
     final extractedDocument = await extractAsset(context, _documentPath);
@@ -581,18 +585,6 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
     super.dispose();
   }
 
-  @override
-  void didChangePlatformBrightness() {
-    currentTheme =
-        WidgetsBinding.instance.window.platformBrightness == Brightness.light
-            ? lightTheme
-            : darkTheme;
-    setState(() {
-      build(context);
-    });
-    super.didChangePlatformBrightness();
-  }
-
   String frameworkVersion() {
     return '$_pspdfkitFor $_frameworkVersion\n';
   }
@@ -674,6 +666,10 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
     print('pdfViewControllerDidDismissHandler');
   }
 
+  void flutterPdfFragmentAddedHandler() {
+    print('flutterPdfFragmentAddedHandler');
+  }
+
   @override
   Widget build(BuildContext context) {
     Pspdfkit.flutterPdfActivityOnPause =
@@ -690,17 +686,14 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
     Pspdfkit.onBookmarkRemoved = onBookmarkRemovedHandler;
     Pspdfkit.onBookmarksSorted = onBookmarksSortedHandler;
     Pspdfkit.onBookmarkRenamed = onBookmarkRenamedHandler;
-
-    currentTheme = MediaQuery.of(context).platformBrightness == Brightness.light
-        ? lightTheme
-        : darkTheme;
+    Pspdfkit.flutterPdfFragmentAdded = flutterPdfFragmentAddedHandler;
 
     final listTiles = <Widget>[
       Container(
           color: Colors.grey[200],
           padding: const EdgeInsets.fromLTRB(20, 20, 20, 20),
           child: Text(_pspdfkitWidgetExamples,
-              style: currentTheme.textTheme.headlineMedium?.copyWith(
+              style: Theme.of(context).textTheme.headlineMedium?.copyWith(
                   fontSize: _fontSize, fontWeight: FontWeight.bold))),
       ListTile(
           title: const Text(_basicExample),
@@ -783,7 +776,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
           color: Colors.grey[200],
           padding: const EdgeInsets.fromLTRB(20, 20, 20, 20),
           child: Text(_pspdfkitGlobalPluginExamples,
-              style: currentTheme.textTheme.headlineMedium?.copyWith(
+              style: Theme.of(context).textTheme.headlineMedium?.copyWith(
                   fontSize: _fontSize, fontWeight: FontWeight.bold))),
       ListTile(
           title: const Text(_basicExampleGlobal),
@@ -824,17 +817,15 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
     ];
     return Scaffold(
         appBar: AppBar(title: const Text(_pspdfkitFlutterPluginTitle)),
-        body: ExampleListView(currentTheme, frameworkVersion(), listTiles));
+        body: ExampleListView(frameworkVersion(), listTiles));
   }
 }
 
 class ExampleListView extends StatelessWidget {
-  final ThemeData themeData;
   final String frameworkVersion;
   final List<Widget> widgets;
 
-  const ExampleListView(this.themeData, this.frameworkVersion, this.widgets,
-      {Key? key})
+  const ExampleListView(this.frameworkVersion, this.widgets, {Key? key})
       : super(key: key);
 
   @override
@@ -845,10 +836,10 @@ class ExampleListView extends StatelessWidget {
           padding: const EdgeInsets.only(top: 24),
           child: Center(
               child: Text(frameworkVersion,
-                  style: themeData.textTheme.headlineMedium?.copyWith(
+                  style: Theme.of(context).textTheme.headlineMedium?.copyWith(
                       fontSize: _fontSize,
                       fontWeight: FontWeight.bold,
-                      color: themeData.primaryColor)))),
+                      color: Theme.of(context).primaryColor)))),
       Expanded(
           child: ListView.separated(
               itemCount: widgets.length,

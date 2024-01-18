@@ -17,6 +17,7 @@
 @interface PspdfPlatformView() <PSPDFViewControllerDelegate>
 @property int64_t platformViewId;
 @property (nonatomic) FlutterMethodChannel *channel;
+@property (nonatomic) FlutterMethodChannel *broadcastChannel;
 @property (nonatomic, weak) UIViewController *flutterViewController;
 @property (nonatomic) PSPDFViewController *pdfViewController;
 @property (nonatomic) PSPDFNavigationController *navigationController;
@@ -31,10 +32,10 @@ PSPDFAnalyticsEventName const PSPDFAnalyticsEventNameDocumentLoaded = @"fully_lo
 }
 
 - (instancetype)initWithFrame:(CGRect)frame viewIdentifier:(int64_t)viewId arguments:(id)args messenger:(NSObject<FlutterBinaryMessenger> *)messenger {
+    
     if ((self = [super init])) {
-        NSString *name = [NSString stringWithFormat:@"com.pspdfkit.widget.%lld", viewId];
-        _platformViewId = viewId;
-        _channel = [FlutterMethodChannel methodChannelWithName:name binaryMessenger:messenger];
+        _channel = [FlutterMethodChannel methodChannelWithName:[NSString stringWithFormat:@"com.pspdfkit.widget.%lld", viewId] binaryMessenger:messenger];
+        _broadcastChannel = [FlutterMethodChannel methodChannelWithName:@"com.pspdfkit.global" binaryMessenger:messenger];
 
         _navigationController = [PSPDFNavigationController new];
         _navigationController.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
@@ -66,15 +67,7 @@ PSPDFAnalyticsEventName const PSPDFAnalyticsEventNameDocumentLoaded = @"fully_lo
             _pdfViewController.appearanceModeManager.appearanceMode = [PspdfkitFlutterConverter appearanceMode:configurationDictionary];
             _pdfViewController.pageIndex = [PspdfkitFlutterConverter pageIndex:configurationDictionary];
             _pdfViewController.delegate = self;
-            
-            // Add page count in custom document loaded event
-            PSPDFPageCount count = [document pageCount];
-            NSDictionary *arguments = @{
-                @"uid": [document UID],
-                @"pageCount": @(count),
-            };
-            
-            [PSPDFKitGlobal.sharedInstance.analytics logEvent:PSPDFAnalyticsEventNameDocumentLoaded attributes:arguments];
+            [NSNotificationCenter.defaultCenter addObserver:self selector:@selector(documentDidFinishRendering) name:PSPDFDocumentViewControllerDidConfigureSpreadViewNotification object:nil];
 
             if ((id)configurationDictionary != NSNull.null) {
                 NSString *key = @"leftBarButtonItems";
@@ -109,6 +102,24 @@ PSPDFAnalyticsEventName const PSPDFAnalyticsEventNameDocumentLoaded = @"fully_lo
     }
 
     return self;
+}
+
+- (void)documentDidFinishRendering {
+    // Remove observer after the initial notification
+    [NSNotificationCenter.defaultCenter removeObserver:self 
+                                                  name:PSPDFDocumentViewControllerDidConfigureSpreadViewNotification
+                                                object:nil];
+    
+    // Add page count in custom document loaded event
+    PSPDFPageCount count = [self.pdfViewController.document pageCount];
+    NSDictionary *arguments = @{
+        @"uid": [self.pdfViewController.document UID],
+        @"pageCount": @(count),
+    };
+
+    if (arguments != nil) {
+        [_broadcastChannel invokeMethod:@"pspdfkitDocumentLoaded" arguments:arguments];
+    }
 }
 
 - (void)dealloc {
