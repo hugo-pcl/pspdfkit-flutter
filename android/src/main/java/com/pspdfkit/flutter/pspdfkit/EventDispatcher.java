@@ -9,6 +9,8 @@
 
 package com.pspdfkit.flutter.pspdfkit;
 
+import android.os.Handler;
+import android.os.Looper;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
@@ -44,8 +46,14 @@ public class EventDispatcher {
         return instance;
     }
 
+    private final Handler uiThreadHandler = new Handler(Looper.getMainLooper());
+
     public void setChannel(@Nullable MethodChannel channel) {
         this.channel = channel;
+    }
+
+    public void notifyActivityOnCreate() {
+        sendEvent("flutterPdfActivityOnCreate");
     }
 
     public void notifyActivityOnPause() {
@@ -54,6 +62,28 @@ public class EventDispatcher {
 
     public void notifyPdfFragmentAdded() {
         sendEvent("flutterPdfFragmentAdded");
+    }    
+
+    public void notifyActivityOnResume() {
+        sendEvent("flutterPdfActivityOnResume");
+    }
+
+    public void notifyActivityOnDestroy() {
+        sendEvent("flutterPdfActivityOnDestroy");
+    }
+
+    public void notifyDocumentLoaded(@NotNull PdfDocument document) {
+        sendEvent("pspdfkitDocumentLoaded", new HashMap<String, Object>() {{
+            put("uid", document.getUid());
+            put("pageCount", document.getPageCount());
+        }});
+    }
+
+    public void notifyPageChanged(int oldPageIndex, int newPageIndex) {
+        sendEvent("pspdfkitPageChanged", new HashMap<String, Integer>() {{
+            put("oldPageIndex", oldPageIndex);
+            put("newPageIndex", newPageIndex);
+        }});
     }
 
     public void notifyInstantSyncStarted(String documentId) {
@@ -85,17 +115,38 @@ public class EventDispatcher {
         }});
     }
 
+    public void notifyBookmarkTapped() {
+        sendEvent("pspdfkitBookmarkTapped");
+    }
+
+    public void notifyBookmarkAdded() {
+        sendEvent("pspdfkitBookmarkAdded");
+    }
+
+    public void notifyBookmarksEdited() {
+        sendEvent("pspdfkitBookmarksEdited");
+    }
+
+    public void notifyBookmarkRemoved() {
+        sendEvent("pspdfkitBookmarkRemoved");
+    }
+
+    public void notifyBookmarksSorted() {
+        sendEvent("pspdfkitBookmarksSorted");
+    }
+
+    public void notifyBookmarkRenamed() {
+        sendEvent("pspdfkitBookmarkRenamed");
+    }
+
+
     private void sendEvent(String eventName) {
         sendEvent(eventName, null);
     }
 
     private void sendEvent(@NonNull final String method, @Nullable final Object arguments) {
         if (channel != null) {
-            channel.invokeMethod(method, arguments, null);
+            uiThreadHandler.post(() -> channel.invokeMethod(method, arguments, null));
         }
-    }
-
-    public void notifyDocumentLoaded(@NotNull PdfDocument document) {
-        sendEvent("pspdfkitDocumentLoaded", document.getUid());
     }
 }

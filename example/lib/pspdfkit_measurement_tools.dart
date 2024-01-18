@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:pspdfkit_flutter/pspdfkit.dart';
 import 'package:pspdfkit_flutter/widgets/pspdfkit_widget.dart';
 import 'package:pspdfkit_flutter/widgets/pspdfkit_widget_controller.dart';
-import 'package:pspdfkit_flutter/pspdfkit.dart';
 
 class PspdfkitMeasurementsExample extends StatefulWidget {
   final String documentPath;
@@ -28,9 +28,9 @@ class _PspdfkitMeasurementsExampleState
           children: [
             PspdfkitWidget(
               documentPath: widget.documentPath,
-              configuration: const {
-                pageMode: 'single',
-              },
+              configuration: const PspdfkitConfiguration(
+                pageMode: PageMode.single,
+              ),
               onPspdfkitWidgetCreated: (view) {
                 setState(() {
                   _controller = view;

@@ -2,6 +2,7 @@ package com.pspdfkit.flutter.pspdfkit;
 
 import android.os.Bundle;
 
+import android.view.WindowManager;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
@@ -40,7 +41,9 @@ public class FlutterPdfActivity extends PdfActivity {
 
     @Override
     protected void onCreate(Bundle bundle) {
+        EventDispatcher.getInstance().notifyActivityOnCreate();
         super.onCreate(bundle);
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_SECURE | WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         bindActivity();
     }
 
@@ -52,14 +55,24 @@ public class FlutterPdfActivity extends PdfActivity {
     }
 
     @Override
+    protected void onResume() {
+        EventDispatcher.getInstance().notifyActivityOnResume();
+        super.onResume();
+    }
+
+    @Override
     protected void onDestroy() {
         super.onDestroy();
+        EventDispatcher.getInstance().notifyActivityOnDestroy();
         releaseActivity();
     }
 
     @Override
     public void onDocumentLoaded(@NonNull PdfDocument pdfDocument) {
         super.onDocumentLoaded(pdfDocument);
+        // Notify the Flutter PSPDFKit plugin that the document has been loaded.
+        EventDispatcher.getInstance().notifyDocumentLoaded(pdfDocument);
+
         Result result = loadedDocumentResult.getAndSet(null);
         if (result != null) {
             result.success(true);

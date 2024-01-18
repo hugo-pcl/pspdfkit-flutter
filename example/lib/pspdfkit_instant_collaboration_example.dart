@@ -231,9 +231,12 @@ class _PspdfkitInstantCollaborationExampleState
 
       _getDocument(url).then((doc) async {
         Navigator.of(context).pop();
-        await Pspdfkit.presentInstant(doc.serverUrl, doc.jwt, {
-          enableInstantComments: enableComments,
-        });
+        await Pspdfkit.presentInstant(
+            doc.serverUrl,
+            doc.jwt,
+            PspdfkitConfiguration(
+              enableInstantComments: enableComments,
+            ));
 
         await Pspdfkit.setDelayForSyncingLocalChanges(delayTime);
         await Pspdfkit.setListenToServerChanges(enableListenToServerChanges);

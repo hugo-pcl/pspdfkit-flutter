@@ -25,6 +25,8 @@
 
 @implementation PspdfPlatformView
 
+PSPDFAnalyticsEventName const PSPDFAnalyticsEventNameDocumentLoaded = @"fully_loaded";
+
 - (nonnull UIView *)view {
     return self.navigationController.view ?: [UIView new];
 }
@@ -107,9 +109,16 @@
     [NSNotificationCenter.defaultCenter removeObserver:self 
                                                   name:PSPDFDocumentViewControllerDidConfigureSpreadViewNotification
                                                 object:nil];
-    NSString *documentId = self.pdfViewController.document.UID;
-    if (documentId != nil) {
-        [_broadcastChannel invokeMethod:@"pspdfkitDocumentLoaded" arguments:documentId];
+    
+    // Add page count in custom document loaded event
+    PSPDFPageCount count = [self.pdfViewController.document pageCount];
+    NSDictionary *arguments = @{
+        @"uid": [self.pdfViewController.document UID],
+        @"pageCount": @(count),
+    };
+
+    if (arguments != nil) {
+        [_broadcastChannel invokeMethod:@"pspdfkitDocumentLoaded" arguments:arguments];
     }
 }
 

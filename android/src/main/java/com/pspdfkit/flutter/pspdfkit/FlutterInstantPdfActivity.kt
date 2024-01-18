@@ -9,6 +9,7 @@ package com.pspdfkit.flutter.pspdfkit
 ///
 
 import android.os.Bundle
+import android.view.WindowManager
 import com.pspdfkit.document.PdfDocument
 import com.pspdfkit.instant.document.InstantPdfDocument
 import com.pspdfkit.instant.exceptions.InstantException
@@ -23,22 +24,32 @@ import java.util.concurrent.atomic.AtomicReference
 class FlutterInstantPdfActivity : InstantPdfActivity() {
     override fun onCreate(bundle: Bundle?) {
         super.onCreate(bundle)
+        window.addFlags(WindowManager.LayoutParams.FLAG_SECURE or WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
+        EventDispatcher.getInstance().notifyActivityOnCreate()
         bindActivity()
     }
 
     override fun onPause() {
+        super.onPause()
         // Notify the Flutter PSPDFKit plugin that the activity is going to enter the onPause state.
         EventDispatcher.getInstance().notifyActivityOnPause()
-        super.onPause()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        EventDispatcher.getInstance().notifyActivityOnResume()
     }
 
     override fun onDestroy() {
         super.onDestroy()
+        EventDispatcher.getInstance().notifyActivityOnDestroy()
         releaseActivity()
     }
     
     override fun onDocumentLoaded(pdfDocument: PdfDocument) {
         super.onDocumentLoaded(pdfDocument)
+        // Notify the Flutter PSPDFKit plugin that the document has been loaded.
+        EventDispatcher.getInstance().notifyDocumentLoaded(pdfDocument)
         val result = loadedDocumentResult.getAndSet(null)
         result?.success(true)
     }

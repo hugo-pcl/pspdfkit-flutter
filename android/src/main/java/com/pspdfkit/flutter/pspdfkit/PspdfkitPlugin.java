@@ -29,6 +29,7 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentActivity;
 
 import com.pspdfkit.PSPDFKit;
+import com.pspdfkit.analytics.AnalyticsClient;
 import com.pspdfkit.annotations.AnnotationType;
 import com.pspdfkit.annotations.configuration.AnnotationConfiguration;
 import com.pspdfkit.annotations.measurements.MeasurementPrecision;
@@ -104,6 +105,8 @@ public class PspdfkitPlugin
         this.permissionRequestResult = new AtomicReference<>();
     }
 
+    private final AnalyticsClient analyticsClient = new MyAnalyticsClient();
+
     /**
      * Holds the disposables.
      */
@@ -132,6 +135,8 @@ public class PspdfkitPlugin
                         "com.pspdfkit.widget",
                         new PSPDFKitViewFactory(binding.getBinaryMessenger())
                 );
+
+        PSPDFKit.addAnalyticsClient(analyticsClient);
     }
 
     /**
@@ -192,8 +197,7 @@ public class PspdfkitPlugin
                     PSPDFKit.initialize(
                             activity,
                             androidLicenseKey,
-                            new ArrayList<>(),
-                            HYBRID_TECHNOLOGY
+                            new ArrayList<>()
                     );
                 } catch (PSPDFKitException e) {
                     result.error("PSPDFKitException", e.getMessage(), null);

@@ -18,6 +18,70 @@
 
 static FlutterMethodChannel *channel;
 
+@interface CustomAnalyticsClient : NSObject<PSPDFAnalyticsClient>
+
+PSPDF_EXPORT PSPDFAnalyticsEventName const PSPDFAnalyticsEventNameDocumentFullyLoaded;
+
+- (void)logEvent:(PSPDFAnalyticsEventName)event attributes:(nullable NSDictionary<NSString *, id> *)attributes;
+
+@end
+
+@implementation CustomAnalyticsClient
+
+PSPDFAnalyticsEventName const PSPDFAnalyticsEventNameDocumentFullyLoaded = @"fully_loaded";
+
+- (void)logEvent:(PSPDFAnalyticsEventName)event attributes:(NSDictionary<NSString *, id> * _Nullable)attributes {
+    if (event == PSPDFAnalyticsEventNameSpreadChange) {
+        NSDictionary *arguments = @{
+            @"oldPageIndex": [attributes objectForKey:@"previous_spread_index"],
+            @"newPageIndex": [attributes objectForKey:@"new_spread_index"]
+        };
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [channel invokeMethod:@"pspdfkitPageChanged" arguments:arguments];
+        });
+    }
+    if (event == PSPDFAnalyticsEventNameDocumentFullyLoaded) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            NSDictionary *arguments = @{
+                @"uid": [attributes objectForKey:@"uid"],
+                @"pageCount": [attributes objectForKey:@"pageCount"]
+            };
+            [channel invokeMethod:@"pspdfkitDocumentLoaded" arguments:arguments];
+        });
+    }
+    if (event == PSPDFAnalyticsEventNameBookmarkSelect) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [channel invokeMethod:@"pspdfkitBookmarkTapped" arguments:nil];
+        });
+    }
+    if (event == PSPDFAnalyticsEventNameBookmarkAdd) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [channel invokeMethod:@"pspdfkitBookmarkAdded" arguments:nil];
+        });
+    }
+    if (event == PSPDFAnalyticsEventNameBookmarkEdit) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [channel invokeMethod:@"pspdfkitBookmarkEdited" arguments:nil];
+        });
+    }
+    if (event == PSPDFAnalyticsEventNameBookmarkRemove) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [channel invokeMethod:@"pspdfkitBookmarkRemoved" arguments:nil];
+        });
+    }
+    if (event == PSPDFAnalyticsEventNameBookmarkRename) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [channel invokeMethod:@"pspdfkitBookmarkRenamed" arguments:nil];
+        });
+    }
+    if (event == PSPDFAnalyticsEventNameBookmarkSort) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [channel invokeMethod:@"pspdfkitBookmarksSorted" arguments:nil];
+        });
+    }
+}
+@end
+
 @interface PspdfkitPlugin() <PSPDFViewControllerDelegate, PSPDFInstantClientDelegate>
 @property (nonatomic) PSPDFViewController *pdfViewController;
 @end
@@ -33,6 +97,10 @@ PSPDFSettingKey const PSPDFSettingKeyHybridEnvironment = @"com.pspdfkit.hybrid-e
     channel = [FlutterMethodChannel methodChannelWithName:@"com.pspdfkit.global" binaryMessenger:[registrar messenger]];
     PspdfkitPlugin* instance = [[PspdfkitPlugin alloc] init];
     [registrar addMethodCallDelegate:instance channel:channel];
+    
+    PSPDFKitGlobal.sharedInstance.analytics.enabled = YES;
+    id<PSPDFAnalyticsClient> analyticsClient = [[CustomAnalyticsClient alloc] init];
+    [PSPDFKitGlobal.sharedInstance.analytics addAnalyticsClient:analyticsClient];
 }
 
 - (void)handleMethodCall:(FlutterMethodCall*)call result:(FlutterResult)result {
@@ -43,7 +111,7 @@ PSPDFSettingKey const PSPDFSettingKeyHybridEnvironment = @"com.pspdfkit.hybrid-e
         [PSPDFKitGlobal setLicenseKey:licenseKey options:@{PSPDFSettingKeyHybridEnvironment: @"Flutter"}];
     } else if ([@"setLicenseKeys" isEqualToString:call.method]) {
         NSString *iOSLicenseKey = call.arguments[@"iOSLicenseKey"];
-        [PSPDFKitGlobal setLicenseKey:iOSLicenseKey options:@{PSPDFSettingKeyHybridEnvironment: @"Flutter"}];
+        [PSPDFKitGlobal setLicenseKey:iOSLicenseKey];
     }else if ([@"present" isEqualToString:call.method]) {
         
         NSString *documentPath = call.arguments[@"document"];
@@ -62,6 +130,16 @@ PSPDFSettingKey const PSPDFSettingKeyHybridEnvironment = @"com.pspdfkit.hybrid-e
             result(error);
             return;
         }
+        
+        // Add page count in custom document loaded event
+        PSPDFPageCount count = [document pageCount];
+        NSDictionary *arguments = @{
+            @"uid": [document UID],
+            @"pageCount": @(count),
+        };
+        
+        [PSPDFKitGlobal.sharedInstance.analytics logEvent:PSPDFAnalyticsEventNameDocumentFullyLoaded attributes:arguments];
+        
         NSDictionary *measurementScale = call.arguments[@"measurementScale"];
         if (measurementScale){
             PSPDFMeasurementScale *scale = [PspdfkitMeasurementConvertor convertScaleWithMeasurement:measurementScale];
@@ -159,8 +237,13 @@ PSPDFSettingKey const PSPDFSettingKeyHybridEnvironment = @"com.pspdfkit.hybrid-e
             if (configurationDictionary[key]) {
                 [PspdfkitFlutterHelper setToolbarTitle:configurationDictionary[key] forViewController:self.pdfViewController];
             }
+            key = @"documentInfoOptions";
+            if (configurationDictionary[key]) {
+                [PspdfkitFlutterHelper setDocumentInfoOptions:configurationDictionary[key] forViewController:self.pdfViewController];
+            }
+            
         }
-        
+            
         PSPDFNavigationController *navigationController = [[PSPDFNavigationController alloc] initWithRootViewController:self.pdfViewController];
         navigationController.modalPresentationStyle = UIModalPresentationFullScreen;
         UIViewController *presentingViewController = [UIApplication sharedApplication].delegate.window.rootViewController;

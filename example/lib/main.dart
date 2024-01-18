@@ -18,16 +18,15 @@ import 'package:pspdfkit_example/pspdfkit_pdf_generation_example.dart';
 import 'package:pspdfkit_example/pspdfkit_save_as_example.dart';
 import 'package:pspdfkit_example/utils/file_utils.dart';
 import 'package:pspdfkit_example/utils/platform_utils.dart';
-
 import 'package:pspdfkit_flutter/pspdfkit.dart';
 import 'package:pspdfkit_flutter/widgets/pspdfkit_widget.dart';
 
 import 'pspdfkit_annotation_preset_customisation.dart';
+import 'pspdfkit_annotation_processing_example.dart';
+import 'pspdfkit_annotations_example.dart';
 import 'pspdfkit_form_example.dart';
 import 'pspdfkit_instantjson_example.dart';
-import 'pspdfkit_annotations_example.dart';
 import 'pspdfkit_manual_save_example.dart';
-import 'pspdfkit_annotation_processing_example.dart';
 
 const String _documentPath = 'PDFs/PSPDFKit.pdf';
 const String _measurementsDocs = 'PDFs/Measurements.pdf';
@@ -171,7 +170,9 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                         ? null
                         : const EdgeInsets.only(top: kToolbarHeight),
                     child: PspdfkitWidget(
-                        documentPath: extractedDocument.path))))));
+                      documentPath: extractedDocument.path,
+                      configuration: const PspdfkitConfiguration(startPage: 6),
+                    ))))));
   }
 
   void showDocumentPlatformStyle() async {
@@ -234,11 +235,10 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                         : const EdgeInsets.only(top: kToolbarHeight),
                     child: PspdfkitWidget(
                         documentPath: extractedDocument.path,
-                        configuration: const {
-                          appearanceMode: 'night',
-                          androidDarkThemeResource:
-                              'PSPDFKit.Theme.Example.Dark'
-                        }))))));
+                        configuration: const PspdfkitConfiguration(
+                            appearanceMode: AppearanceMode.night,
+                            androidDarkThemeResource:
+                                'PSPDFKit.Theme.Example.Dark')))))));
   }
 
   void applyCustomConfiguration() async {
@@ -258,55 +258,58 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                         : const EdgeInsets.only(top: kToolbarHeight),
                     child: PspdfkitWidget(
                         documentPath: extractedDocument.path,
-                        configuration: const {
-                          scrollDirection: 'vertical',
-                          pageTransition: 'scrollContinuous',
-                          spreadFitting: 'fit',
-                          userInterfaceViewMode: 'alwaysVisible',
-                          androidShowSearchAction: true,
-                          inlineSearch: false,
-                          showThumbnailBar: 'floating',
-                          androidShowThumbnailGridAction: true,
-                          androidShowOutlineAction: true,
-                          androidShowAnnotationListAction: true,
-                          showPageLabels: true,
-                          documentLabelEnabled: false,
-                          invertColors: false,
-                          androidGrayScale: false,
-                          startPage: 2,
-                          enableAnnotationEditing: true,
-                          enableTextSelection: false,
-                          androidShowBookmarksAction: false,
-                          androidEnableDocumentEditor: false,
-                          androidShowShareAction: true,
-                          androidShowPrintAction: false,
-                          androidShowDocumentInfoView: true,
-                          appearanceMode: 'default',
-                          androidDefaultThemeResource: 'PSPDFKit.Theme.Example',
-                          iOSRightBarButtonItems: [
-                            'thumbnailsButtonItem',
-                            'activityButtonItem',
-                            'searchButtonItem',
-                            'annotationButtonItem'
-                          ],
-                          iOSLeftBarButtonItems: ['settingsButtonItem'],
-                          iOSAllowToolbarTitleChange: false,
-                          toolbarTitle: 'Custom Title',
-                          settingsMenuItems: [
-                            'pageTransition',
-                            'scrollDirection',
-                            'androidTheme',
-                            'iOSAppearance',
-                            'androidPageLayout',
-                            'iOSPageMode',
-                            'iOSSpreadFitting',
-                            'androidScreenAwake',
-                            'iOSBrightness'
-                          ],
-                          showActionNavigationButtons: false,
-                          pageMode: 'double',
-                          firstPageAlwaysSingle: true
-                        }))))));
+                        configuration: const PspdfkitConfiguration(
+                            scrollDirection: ScrollDirection.vertical,
+                            pageTransition: PageTransition.scrollContinuous,
+                            spreadFitting: SpreadFitting.fit,
+                            userInterfaceViewMode:
+                                UserInterfaceViewMode.alwaysVisible,
+                            androidShowSearchAction: true,
+                            inlineSearch: false,
+                            showThumbnailBar: ShowThumbnailBar.floating,
+                            androidShowThumbnailGridAction: true,
+                            androidShowOutlineAction: true,
+                            androidShowAnnotationListAction: true,
+                            showPageLabels: true,
+                            documentLabelEnabled: false,
+                            invertColors: false,
+                            androidGrayScale: false,
+                            startPage: 2,
+                            enableAnnotationEditing: true,
+                            enableTextSelection: false,
+                            androidShowBookmarksAction: false,
+                            androidEnableDocumentEditor: false,
+                            androidShowShareAction: true,
+                            androidShowPrintAction: false,
+                            androidShowDocumentInfoView: true,
+                            appearanceMode: AppearanceMode.defaultMode,
+                            androidDefaultThemeResource:
+                                'PSPDFKit.Theme.Example',
+                            iOSRightBarButtonItems: [
+                              IOSBarButtonsItem.thumbnailsButtonItem,
+                              IOSBarButtonsItem.activityButtonItem,
+                              IOSBarButtonsItem.searchButtonItem,
+                              IOSBarButtonsItem.annotationButtonItem
+                            ],
+                            iOSLeftBarButtonItems: [
+                              IOSBarButtonsItem.settingsButtonItem,
+                            ],
+                            iOSAllowToolbarTitleChange: false,
+                            toolbarTitle: 'Custom Title',
+                            settingsMenuItems: [
+                              SettingsMenuItem.pageTransition,
+                              SettingsMenuItem.scrollDirection,
+                              SettingsMenuItem.androidTheme,
+                              SettingsMenuItem.iOSAppearance,
+                              SettingsMenuItem.androidPageLayout,
+                              SettingsMenuItem.iOSPageMode,
+                              SettingsMenuItem.iOSSpreadFitting,
+                              SettingsMenuItem.androidScreenAwake,
+                              SettingsMenuItem.iOSBrightness
+                            ],
+                            showActionNavigationButtons: false,
+                            pageMode: PageMode.double,
+                            firstPageAlwaysSingle: true)))))));
   }
 
   void unlockPasswordProtectedDocument() async {
@@ -326,7 +329,8 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                         : const EdgeInsets.only(top: kToolbarHeight),
                     child: PspdfkitWidget(
                         documentPath: extractedLockedDocument.path,
-                        configuration: const {password: 'test123'}))))));
+                        configuration: const PspdfkitConfiguration(
+                            password: 'test123')))))));
   }
 
   void showFormDocumentExample() async {
@@ -365,7 +369,8 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
     await Navigator.of(context).push<dynamic>(MaterialPageRoute<dynamic>(
         builder: (_) => PspdfkitManualSaveExampleWidget(
             documentPath: extractedWritableDocument.path,
-            configuration: const {disableAutosave: true})));
+            configuration:
+                const PspdfkitConfiguration(disableAutosave: true))));
   }
 
   void saveAsExample() async {
@@ -428,70 +433,72 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
 
   void applyDarkThemeGlobal() async {
     final extractedDocument = await extractAsset(context, _documentPath);
-    await Pspdfkit.present(extractedDocument.path, configuration: {
-      appearanceMode: 'night',
-      androidDarkThemeResource: 'PSPDFKit.Theme.Example.Dark'
-    });
+    await Pspdfkit.present(extractedDocument.path,
+        configuration: const PspdfkitConfiguration(
+            appearanceMode: AppearanceMode.night,
+            androidDarkThemeResource: 'PSPDFKit.Theme.Example.Dark'));
   }
 
   void applyCustomConfigurationGlobal() async {
     final extractedDocument = await extractAsset(context, _documentPath);
-    await Pspdfkit.present(extractedDocument.path, configuration: {
-      scrollDirection: 'vertical',
-      pageTransition: 'scrollPerSpread',
-      spreadFitting: 'fit',
-      userInterfaceViewMode: 'alwaysVisible',
-      androidShowSearchAction: true,
-      inlineSearch: false,
-      showThumbnailBar: 'floating',
-      androidShowThumbnailGridAction: true,
-      androidShowOutlineAction: true,
-      androidShowAnnotationListAction: true,
-      showPageLabels: true,
-      documentLabelEnabled: false,
-      invertColors: false,
-      androidGrayScale: false,
-      startPage: 2,
-      enableAnnotationEditing: true,
-      enableTextSelection: false,
-      androidShowBookmarksAction: false,
-      androidEnableDocumentEditor: false,
-      androidShowShareAction: true,
-      androidShowPrintAction: false,
-      androidShowDocumentInfoView: true,
-      appearanceMode: 'default',
-      androidDefaultThemeResource: 'PSPDFKit.Theme.Example',
-      iOSRightBarButtonItems: [
-        'thumbnailsButtonItem',
-        'activityButtonItem',
-        'searchButtonItem',
-        'annotationButtonItem'
-      ],
-      iOSLeftBarButtonItems: ['settingsButtonItem'],
-      iOSAllowToolbarTitleChange: false,
-      toolbarTitle: 'Custom Title',
-      settingsMenuItems: [
-        'pageTransition',
-        'scrollDirection',
-        'androidTheme',
-        'iOSAppearance',
-        'androidPageLayout',
-        'iOSPageMode',
-        'iOSSpreadFitting',
-        'androidScreenAwake',
-        'iOSBrightness'
-      ],
-      showActionNavigationButtons: false,
-      pageMode: 'double',
-      firstPageAlwaysSingle: true
-    });
+    await Pspdfkit.present(extractedDocument.path,
+        configuration: const PspdfkitConfiguration(
+            scrollDirection: ScrollDirection.vertical,
+            pageTransition: PageTransition.scrollContinuous,
+            spreadFitting: SpreadFitting.fit,
+            userInterfaceViewMode: UserInterfaceViewMode.alwaysVisible,
+            androidShowSearchAction: true,
+            inlineSearch: false,
+            showThumbnailBar: ShowThumbnailBar.floating,
+            androidShowThumbnailGridAction: true,
+            androidShowOutlineAction: true,
+            androidShowAnnotationListAction: true,
+            showPageLabels: true,
+            documentLabelEnabled: false,
+            invertColors: false,
+            androidGrayScale: false,
+            startPage: 2,
+            enableAnnotationEditing: true,
+            enableTextSelection: false,
+            androidShowBookmarksAction: false,
+            androidEnableDocumentEditor: false,
+            androidShowShareAction: true,
+            androidShowPrintAction: false,
+            androidShowDocumentInfoView: true,
+            appearanceMode: AppearanceMode.defaultMode,
+            androidDefaultThemeResource: 'PSPDFKit.Theme.Example',
+            iOSRightBarButtonItems: [
+              IOSBarButtonsItem.thumbnailsButtonItem,
+              IOSBarButtonsItem.activityButtonItem,
+              IOSBarButtonsItem.searchButtonItem,
+              IOSBarButtonsItem.annotationButtonItem
+            ],
+            iOSLeftBarButtonItems: [
+              IOSBarButtonsItem.settingsButtonItem,
+            ],
+            iOSAllowToolbarTitleChange: false,
+            toolbarTitle: 'Custom Title',
+            settingsMenuItems: [
+              SettingsMenuItem.pageTransition,
+              SettingsMenuItem.scrollDirection,
+              SettingsMenuItem.androidTheme,
+              SettingsMenuItem.iOSAppearance,
+              SettingsMenuItem.androidPageLayout,
+              SettingsMenuItem.iOSPageMode,
+              SettingsMenuItem.iOSSpreadFitting,
+              SettingsMenuItem.androidScreenAwake,
+              SettingsMenuItem.iOSBrightness
+            ],
+            showActionNavigationButtons: false,
+            pageMode: PageMode.double,
+            firstPageAlwaysSingle: true));
   }
 
   void unlockPasswordProtectedDocumentGlobal() async {
     final extractedLockedDocument =
         await extractAsset(context, _lockedDocumentPath);
     await Pspdfkit.present(extractedLockedDocument.path,
-        configuration: {password: 'test123'});
+        configuration: const PspdfkitConfiguration(password: 'test123'));
   }
 
   void showFormDocumentExampleGlobal() async {
@@ -617,6 +624,38 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
     // await Pspdfkit.setLicenseKey("YOUR_FLUTTER_LICENSE_KEY_GOES_HERE");
   }
 
+  void onPageChangedHandler(int oldPageIndex, int newPageIndex) {
+    print('onPageChangedHandler: $oldPageIndex -> $newPageIndex');
+  }
+
+  void onDocumentLoadedHandler(String uid, int pageCount) {
+    print('onDocumentLoadedHandler: $uid, $pageCount');
+  }
+
+  void onBookmarkTappedHandler() {
+    print('onBookmarkTappedHandler');
+  }
+
+  void onBookmarkAddedHandler() {
+    print('onBookmarkAddedHandler');
+  }
+
+  void onBookmarkEditedHandler() {
+    print('onBookmarkEditedHandler');
+  }
+
+  void onBookmarkRemovedHandler() {
+    print('onBookmarkRemovedHandler');
+  }
+
+  void onBookmarksSortedHandler() {
+    print('onBookmarksSortedHandler');
+  }
+
+  void onBookmarkRenamedHandler() {
+    print('onBookmarkRenamedHandler');
+  }
+
   void flutterPdfActivityOnPauseHandler() {
     print('flutterPdfActivityOnPauseHandler');
   }
@@ -629,12 +668,8 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
     print('pdfViewControllerDidDismissHandler');
   }
 
-  void flutterPdfFragmentAdded() {
-    print('flutterPdfFragmentAdded');
-  }
-
-  void pspdfkitDocumentLoaded(String? documentId) {
-    print('pspdfkitDocumentLoaded: $documentId');
+  void flutterPdfFragmentAddedHandler() {
+    print('flutterPdfFragmentAddedHandler');
   }
 
   @override
@@ -645,16 +680,22 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
         () => pdfViewControllerWillDismissHandler();
     Pspdfkit.pdfViewControllerDidDismiss =
         () => pdfViewControllerDidDismissHandler();
-    Pspdfkit.flutterPdfFragmentAdded = () => flutterPdfFragmentAdded();
-    Pspdfkit.pspdfkitDocumentLoaded =
-        (documentId) => pspdfkitDocumentLoaded(documentId);
+    Pspdfkit.onPageChanged = onPageChangedHandler;
+    Pspdfkit.onDocumentLoaded = onDocumentLoadedHandler;
+    Pspdfkit.onBookmarkTapped = onBookmarkTappedHandler;
+    Pspdfkit.onBookmarkAdded = onBookmarkAddedHandler;
+    Pspdfkit.onBookmarkEdited = onBookmarkEditedHandler;
+    Pspdfkit.onBookmarkRemoved = onBookmarkRemovedHandler;
+    Pspdfkit.onBookmarksSorted = onBookmarksSortedHandler;
+    Pspdfkit.onBookmarkRenamed = onBookmarkRenamedHandler;
+    Pspdfkit.flutterPdfFragmentAdded = flutterPdfFragmentAddedHandler;
 
     final listTiles = <Widget>[
       Container(
           color: Colors.grey[200],
           padding: const EdgeInsets.fromLTRB(20, 20, 20, 20),
           child: Text(_pspdfkitWidgetExamples,
-              style: Theme.of(context).textTheme.headline4?.copyWith(
+              style: Theme.of(context).textTheme.headlineMedium?.copyWith(
                   fontSize: _fontSize, fontWeight: FontWeight.bold))),
       ListTile(
           title: const Text(_basicExample),

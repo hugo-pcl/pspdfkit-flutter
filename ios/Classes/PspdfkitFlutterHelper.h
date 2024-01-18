@@ -27,6 +27,7 @@ NS_ASSUME_NONNULL_BEGIN
 + (void)setToolbarTitle:(NSString *)toolbarTitle forViewController:(PSPDFViewController *)pdfViewController;
 + (void)setLeftBarButtonItems:(nullable NSArray <NSString *> *)items forViewController:(PSPDFViewController *)pdfViewController;
 + (void)setRightBarButtonItems:(nullable NSArray <NSString *> *)items forViewController:(PSPDFViewController *)pdfViewController;
++ (void)setDocumentInfoOptions:(nullable NSArray <NSString *> *)items forViewController:(PSPDFViewController *)pdfViewController;
 
 @end
 

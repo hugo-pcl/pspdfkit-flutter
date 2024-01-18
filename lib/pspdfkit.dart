@@ -9,38 +9,27 @@
 library pspdfkit;
 
 import 'dart:async';
-import 'package:flutter/foundation.dart';
-import 'package:flutter/services.dart';
 import 'dart:io';
-import 'package:flutter/material.dart';
 
-part 'src/processor/pdf_image_page.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 part 'android_permission_status.dart';
-
 part 'configuration_options.dart';
-
-part 'src/processor/new_page.dart';
-
-part 'src/processor/page_pattern.dart';
-
-part 'src/processor/page_position.dart';
-
-part 'src/processor/page_z_order.dart';
-
-part 'src/processor/pdf_page.dart';
-
-part 'src/processor/page_size.dart';
-
+part 'pspdfkit_configuration.dart';
 part 'pspdfkit_processor.dart';
-
-part 'src/measurements/measurement_precision.dart';
-
-part 'src/measurements/measurement_scale.dart';
-
 part 'src/annotation_preset_configurations.dart';
-
 part 'src/annotations/annotation_tools.dart';
+part 'src/measurements/measurement_precision.dart';
+part 'src/measurements/measurement_scale.dart';
+part 'src/processor/new_page.dart';
+part 'src/processor/page_pattern.dart';
+part 'src/processor/page_position.dart';
+part 'src/processor/page_size.dart';
+part 'src/processor/page_z_order.dart';
+part 'src/processor/pdf_image_page.dart';
+part 'src/processor/pdf_page.dart';
 
 /// PSPDFKit plugin to load PDF and image documents on both platform iOS and Android.
 class Pspdfkit {
@@ -72,13 +61,15 @@ class Pspdfkit {
       });
 
   /// Loads a [document] with a supported format using a given [configuration].
-  static Future<bool?> present(String document,
-          {dynamic configuration,
-          MeasurementScale? measurementScale,
-          MeasurementPrecision? measurementPrecision}) async =>
+  static Future<bool?> present(
+    String document, {
+    PspdfkitConfiguration? configuration,
+    MeasurementScale? measurementScale,
+    MeasurementPrecision? measurementPrecision,
+  }) async =>
       await _channel.invokeMethod('present', <String, dynamic>{
         'document': document,
-        'configuration': configuration,
+        'configuration': configuration?.toMap(),
         'measurementScale': measurementScale?.toMap(),
         'measurementPrecision': measurementPrecision?.name,
       });
@@ -92,11 +83,11 @@ class Pspdfkit {
   /// Returns false if the document could not be opened.
   ///
   static Future<bool?> presentInstant(String serverUrl, String jwt,
-          [dynamic configuration]) async =>
+          [PspdfkitConfiguration? configuration]) async =>
       await _channel.invokeMethod('presentInstant', <String, dynamic>{
         'serverUrl': serverUrl,
         'jwt': jwt,
-        'configuration': configuration
+        'configuration': configuration?.toMap(),
       });
 
   /// Sets the value of a form field by specifying its fully qualified field name.
@@ -270,8 +261,49 @@ class Pspdfkit {
     return Directory(path);
   }
 
+  /// onPageChanged callback
+  /// Called when the page changes.
+  static void Function(int oldPageIndex, int newPageIndex)? onPageChanged;
+
+  /// onDocumentLoaded callback
+  /// Called when the document is loaded.
+  static void Function(String documentId, int pageCount)? onDocumentLoaded;
+
+  /// onBookmarkTapped callback
+  /// Called when a bookmark is tapped.
+  static void Function()? onBookmarkTapped;
+
+  /// onBookmarkAdded callback
+  /// Called when a bookmark is added.
+  static void Function()? onBookmarkAdded;
+
+  /// onBookmarkRemoved callback
+  /// Called when a bookmark is removed.
+  static void Function()? onBookmarkRemoved;
+
+  /// onBookmarkEdited callback
+  /// Called when a bookmark is edited.
+  static void Function()? onBookmarkEdited;
+
+  /// onBookmarksSorted callback
+  /// Called when bookmarks are sorted.
+  static void Function()? onBookmarksSorted;
+
+  /// onBookmarkRenamed callback
+  /// Called when a bookmark is renamed.
+  static void Function()? onBookmarkRenamed;
+
+  /// onCreate callback for FlutterPdfActivity
+  static void Function()? flutterPdfActivityOnCreate;
+
   /// onPause callback for FlutterPdfActivity
   static void Function()? flutterPdfActivityOnPause;
+
+  /// onResume callback for FlutterPdfActivity
+  static void Function()? flutterPdfActivityOnResume;
+
+  /// onDestroy callback for FlutterPdfActivity
+  static void Function()? flutterPdfActivityOnDestroy;
 
   /// Added callback for FlutterPdfFragment
   static void Function()? flutterPdfFragmentAdded;
@@ -314,11 +346,20 @@ class Pspdfkit {
   static Future<void> _platformCallHandler(MethodCall call) {
     try {
       switch (call.method) {
+        case 'flutterPdfActivityOnCreate':
+          flutterPdfActivityOnCreate?.call();
+          break;
         case 'flutterPdfActivityOnPause':
           flutterPdfActivityOnPause?.call();
           break;
         case 'flutterPdfFragmentAdded':
           flutterPdfFragmentAdded?.call();
+          break;
+        case 'flutterPdfActivityOnResume':
+          flutterPdfActivityOnResume?.call();
+          break;
+        case 'flutterPdfActivityOnDestroy':
+          flutterPdfActivityOnDestroy?.call();
           break;
         case 'pdfViewControllerWillDismiss':
           pdfViewControllerWillDismiss?.call();
@@ -367,8 +408,43 @@ class Pspdfkit {
                 arguments['error'] as String);
             break;
           }
+        case 'pspdfkitPageChanged':
+          {
+            final Map<dynamic, dynamic> arguments =
+                call.arguments as Map<dynamic, dynamic>;
+            onPageChanged?.call(
+              arguments['oldPageIndex'] as int,
+              arguments['newPageIndex'] as int,
+            );
+            break;
+          }
         case 'pspdfkitDocumentLoaded':
-          pspdfkitDocumentLoaded?.call(call.arguments as String);
+          {
+            final Map<dynamic, dynamic> arguments =
+                call.arguments as Map<dynamic, dynamic>;
+            onDocumentLoaded?.call(
+              arguments['uid'] as String,
+              arguments['pageCount'] as int,
+            );
+            break;
+          }
+        case 'pspdfkitBookmarkTapped':
+          onBookmarkTapped?.call();
+          break;
+        case 'pspdfkitBookmarkAdded':
+          onBookmarkAdded?.call();
+          break;
+        case 'pspdfkitBookmarkRemoved':
+          onBookmarkRemoved?.call();
+          break;
+        case 'pspdfkitBookmarkEdited':
+          onBookmarkEdited?.call();
+          break;
+        case 'pspdfkitBookmarksSorted':
+          onBookmarksSorted?.call();
+          break;
+        case 'pspdfkitBookmarkRenamed':
+          onBookmarkRenamed?.call();
           break;
         default:
           if (kDebugMode) {

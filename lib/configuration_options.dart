@@ -42,6 +42,8 @@ const String androidShowSearchAction = 'androidShowSearchAction';
 const String androidShowOutlineAction = 'androidShowOutlineAction';
 const String androidShowBookmarksAction = 'androidShowBookmarksAction';
 const String androidEnableDocumentEditor = 'androidEnableDocumentEditor';
+const String androidEnableContentEditing = 'androidEnableContentEditing';
+
 const String androidShowShareAction = 'androidShowShareAction';
 const String androidShowPrintAction = 'androidShowPrintAction';
 const String androidShowDocumentInfoView = 'androidShowDocumentInfoView';
@@ -50,6 +52,7 @@ const String androidDefaultThemeResource = 'androidDefaultThemeResource';
 const String iOSLeftBarButtonItems = 'iOSLeftBarButtonItems';
 const String iOSRightBarButtonItems = 'iOSRightBarButtonItems';
 const String iOSAllowToolbarTitleChange = 'iOSAllowToolbarTitleChange';
+const String iOSDocumentInfoOptions = 'iOSDocumentInfoOptions';
 
 /// Thumbnail Options
 
@@ -191,3 +194,107 @@ const String enableMeasurementMagnifier = 'enableMagnifier';
 const String enableMeasurementTools = 'enableMeasurementTools';
 
 const String enableMeasurementToolSnapping = 'enableMeasurementToolSnapping';
+
+enum ScrollDirection { horizontal, vertical }
+
+enum PageTransition { scrollPerSpread, scrollContinuous, curl }
+
+enum PageMode { automatic, single, double }
+
+enum SpreadFitting { fit, fill, adaptive }
+
+enum UserInterfaceViewMode {
+  automatic,
+  automaticBorderPages,
+  automaticNoFirstLastPage,
+  always,
+  alwaysVisible,
+  alwaysHidden,
+  never
+}
+
+enum AppearanceMode {
+  defaultMode,
+  night,
+  sepia;
+
+  String get name {
+    switch (this) {
+      case defaultMode:
+        return 'default';
+      case night:
+        return 'night';
+      case sepia:
+        return 'sepia';
+      default:
+        return 'default';
+    }
+  }
+}
+
+enum SettingsMenuItem {
+  pageTransition,
+  scrollDirection,
+  androidTheme,
+  iOSAppearance,
+  androidPageLayout,
+  iOSPageMode,
+  iOSSpreadFitting,
+  androidScreenAwake,
+  iOSBrightness,
+}
+
+enum ShowThumbnailBar {
+  none,
+  defaultBar,
+  floating,
+  pinned,
+  scrubberBar,
+  scrollable;
+
+  String get name {
+    switch (this) {
+      case none:
+        return 'none';
+      case defaultBar:
+        return 'default';
+      case floating:
+        return 'floating';
+      case pinned:
+        return 'pinned';
+      case scrubberBar:
+        return 'scrubberBar';
+      case scrollable:
+        return 'scrollable';
+      default:
+        return 'default';
+    }
+  }
+}
+
+enum IOSBarButtonsItem {
+  closeButtonItem,
+  outlineButtonItem,
+  searchButtonItem,
+  thumbnailsButtonItem,
+  documentEditorButtonItem,
+  printButtonItem,
+  openInButtonItem,
+  emailButtonItem,
+  messageButtonItem,
+  annotationButtonItem,
+  bookmarkButtonItem,
+  brightnessButtonItem,
+  activityButtonItem,
+  settingsButtonItem,
+  readerViewButtonItem,
+}
+
+enum IOSDocumentInfoOption {
+  outline,
+  annotations,
+  bookmarks,
+  embeddedFiles,
+  documentInfo,
+  security,
+}
