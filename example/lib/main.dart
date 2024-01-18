@@ -170,7 +170,9 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                         ? null
                         : const EdgeInsets.only(top: kToolbarHeight),
                     child: PspdfkitWidget(
-                        documentPath: extractedDocument.path))))));
+                      documentPath: extractedDocument.path,
+                      configuration: const PspdfkitConfiguration(startPage: 6),
+                    ))))));
   }
 
   void showDocumentPlatformStyle() async {
