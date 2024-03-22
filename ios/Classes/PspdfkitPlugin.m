@@ -130,16 +130,7 @@ PSPDFSettingKey const PSPDFSettingKeyHybridEnvironment = @"com.pspdfkit.hybrid-e
             result(error);
             return;
         }
-        
-        // Add page count in custom document loaded event
-        PSPDFPageCount count = [document pageCount];
-        NSDictionary *arguments = @{
-            @"uid": [document UID],
-            @"pageCount": @(count),
-        };
-        
-        [PSPDFKitGlobal.sharedInstance.analytics logEvent:PSPDFAnalyticsEventNameDocumentFullyLoaded attributes:arguments];
-        
+                
         NSDictionary *measurementScale = call.arguments[@"measurementScale"];
         if (measurementScale){
             PSPDFMeasurementScale *scale = [PspdfkitMeasurementConvertor convertScaleWithMeasurement:measurementScale];
@@ -162,6 +153,16 @@ PSPDFSettingKey const PSPDFSettingKeyHybridEnvironment = @"com.pspdfkit.hybrid-e
         
         self.pdfViewController = [[PSPDFViewController alloc] initWithDocument:document configuration:configuration];
         [self setupViewController:configurationDictionary result:result];
+        
+        
+        // Add page count in custom document loaded event
+        PSPDFPageCount count = [document pageCount];
+        NSDictionary *arguments = @{
+            @"uid": [document UID],
+            @"pageCount": @(count),
+        };
+        
+        [PSPDFKitGlobal.sharedInstance.analytics logEvent:PSPDFAnalyticsEventNameDocumentFullyLoaded attributes:arguments];
 
     }else if([@"presentInstant" isEqualToString:call.method]){
         NSString *jwt = call.arguments[@"jwt"];
