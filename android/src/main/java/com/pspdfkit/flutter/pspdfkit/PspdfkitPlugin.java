@@ -121,6 +121,7 @@ public class PspdfkitPlugin
      */
     @Override
     public void onAttachedToEngine(@NonNull FlutterPluginBinding binding) {
+        Log.d("### Notif", "### Attaching to engine");
         final MethodChannel channel = new MethodChannel(
                 binding.getBinaryMessenger(),
                 "com.pspdfkit.global"
@@ -151,6 +152,7 @@ public class PspdfkitPlugin
      */
     @Override
     public void onDetachedFromEngine(@NonNull FlutterPluginBinding binding) {
+        Log.d("### Notif", "### Detaching from engine");
         eventDispatcher.setChannel(null);
         if (disposable != null) {
             disposable.dispose();
@@ -175,6 +177,7 @@ public class PspdfkitPlugin
         switch (call.method) {
             case "frameworkVersion":
                 result.success("Android " + PSPDFKit.VERSION);
+                
                 break;
             case "setLicenseKey":
                 String licenseKey = call.argument("licenseKey");
