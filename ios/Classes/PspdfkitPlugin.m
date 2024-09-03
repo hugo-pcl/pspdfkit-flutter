@@ -111,7 +111,7 @@ PSPDFSettingKey const PSPDFSettingKeyHybridEnvironment = @"com.pspdfkit.hybrid-e
         [PSPDFKitGlobal setLicenseKey:licenseKey options:@{PSPDFSettingKeyHybridEnvironment: @"Flutter"}];
     } else if ([@"setLicenseKeys" isEqualToString:call.method]) {
         NSString *iOSLicenseKey = call.arguments[@"iOSLicenseKey"];
-        [PSPDFKitGlobal setLicenseKey:iOSLicenseKey];
+        [PSPDFKitGlobal setLicenseKey:iOSLicenseKey options:@{PSPDFSettingKeyHybridEnvironment: @"Flutter"}];
     }else if ([@"present" isEqualToString:call.method]) {
         
         NSString *documentPath = call.arguments[@"document"];

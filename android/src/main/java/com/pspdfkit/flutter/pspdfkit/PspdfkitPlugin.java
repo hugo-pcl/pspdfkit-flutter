@@ -197,7 +197,8 @@ public class PspdfkitPlugin
                     PSPDFKit.initialize(
                             activity,
                             androidLicenseKey,
-                            new ArrayList<>()
+                            new ArrayList<>(),
+                            HYBRID_TECHNOLOGY
                     );
                 } catch (PSPDFKitException e) {
                     result.error("PSPDFKitException", e.getMessage(), null);
