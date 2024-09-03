@@ -13,6 +13,7 @@ import android.os.Handler;
 import android.os.Looper;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import android.util.Log;
 
 import com.pspdfkit.document.PdfDocument;
 
@@ -26,6 +27,10 @@ import io.flutter.plugin.common.MethodChannel;
  * Internal singleton class used to communicate between activities and the PSPDFKit Flutter plugin.
  */
 public class EventDispatcher {
+    public interface EventDispatcherListener {
+        void triggerEvent(@NonNull final String method, @Nullable final Object arguments);
+    }
+
     @Nullable
     private static EventDispatcher instance;
     /**
@@ -34,6 +39,8 @@ public class EventDispatcher {
      */
     @Nullable
     private MethodChannel channel = null;
+    
+    private EventDispatcherListener listener;
 
     private EventDispatcher() {
     }
@@ -48,6 +55,10 @@ public class EventDispatcher {
 
     private final Handler uiThreadHandler = new Handler(Looper.getMainLooper());
 
+    public void setDispatcherListener(EventDispatcherListener listener) {
+        this.listener = listener;
+    }
+    
     public void setChannel(@Nullable MethodChannel channel) {
         this.channel = channel;
     }
@@ -80,6 +91,7 @@ public class EventDispatcher {
     }
 
     public void notifyPageChanged(int oldPageIndex, int newPageIndex) {
+        Log.d("##Notif", "### Page changed:"+oldPageIndex+" New page: "+newPageIndex);
         sendEvent("pspdfkitPageChanged", new HashMap<String, Integer>() {{
             put("oldPageIndex", oldPageIndex);
             put("newPageIndex", newPageIndex);
@@ -145,6 +157,9 @@ public class EventDispatcher {
     }
 
     private void sendEvent(@NonNull final String method, @Nullable final Object arguments) {
+        if (this.listener != null) {
+            uiThreadHandler.post(() -> this.listener.triggerEvent(method, arguments));
+        }
         if (channel != null) {
             uiThreadHandler.post(() -> channel.invokeMethod(method, arguments, null));
         }

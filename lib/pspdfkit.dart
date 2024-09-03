@@ -453,7 +453,7 @@ class Pspdfkit {
       }
     } catch (e) {
       if (kDebugMode) {
-        print(e);
+        print('### Fatal error while calling method channel $e');
       }
     }
     return Future.value();
