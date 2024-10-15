@@ -91,3 +91,6 @@ unlinked_spec.ds
 /example/ios/Flutter/Flutter.podspec
 /example/.flutter-plugins-dependencies
 /.vs
+
+# FVM Version Cache
+.fvm/
